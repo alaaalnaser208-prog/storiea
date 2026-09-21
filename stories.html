@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>قصص الحفظيات التفاعلية</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Literata:opsz,wght@7..72,400;7..72,500;7..72,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  --bg:#eef1f4; --surface:#ffffff; --ink:#14202e; --muted:#5b6878; --line:#d5dbe3;
+  --accent:#0f6b6e; --accent-ink:#ffffff; --accent-soft:#dcefee;
+  --hl:#ffe45c; --hl-soft:rgba(255,228,92,.75);
+  --seen:#b9e6cf; --seen-soft:rgba(185,230,207,.85);
+  --reading:#eaf3fb; --ok:#1d7a4b; --warn-bg:#e8f5ec;
+  --shadow:0 10px 30px rgba(20,32,46,.14);
+  --ui:"IBM Plex Sans Arabic","Segoe UI",Tahoma,Arial,sans-serif;
+  --story:"Literata",Georgia,"Times New Roman",serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f1720; --surface:#17212d; --ink:#e8edf3; --muted:#9aa7b7; --line:#2b3746;
+    --accent:#59c3c6; --accent-ink:#06282a; --accent-soft:#17383b;
+    --hl:#f0cf2f; --hl-soft:rgba(240,207,47,.32);
+    --seen:#4fa77c; --seen-soft:rgba(79,167,124,.35);
+    --reading:#1c2d40; --ok:#6fd39c; --warn-bg:#173326;
+    --shadow:0 10px 30px rgba(0,0,0,.5);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f1720; --surface:#17212d; --ink:#e8edf3; --muted:#9aa7b7; --line:#2b3746;
+  --accent:#59c3c6; --accent-ink:#06282a; --accent-soft:#17383b;
+  --hl:#f0cf2f; --hl-soft:rgba(240,207,47,.32);
+  --seen:#4fa77c; --seen-soft:rgba(79,167,124,.35);
+  --reading:#1c2d40; --ok:#6fd39c; --warn-bg:#173326;
+  --shadow:0 10px 30px rgba(0,0,0,.5);
+}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px);-webkit-text-size-adjust:100%}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--ui);line-height:1.6}
+button{font-family:inherit;font-size:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.top-in{max-width:780px;margin:0 auto;padding:10px 16px}
+.brand{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:8px}
+.brand h1{font-size:1.05rem;margin:0;font-weight:700}
+.brand span{font-size:.82rem;color:var(--muted)}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tab{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:8px 6px;cursor:pointer;text-align:center;line-height:1.3}
+.tab b{display:block;font-size:.95rem}
+.tab small{display:block;color:var(--muted);font-size:.74rem}
+.tab[aria-current="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.tab[aria-current="true"] small{color:var(--accent-ink);opacity:.85}
+main{max-width:780px;margin:0 auto;padding:16px 16px 40px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 18px 8px}
+.s-title{margin:0;font-family:var(--story);font-size:1.9rem;line-height:1.2;text-align:left;direction:ltr}
+.s-sub{margin:4px 0 0;color:var(--muted);font-size:.92rem}
+.tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:16px 0 4px;padding:12px 0;border-block:1px solid var(--line)}
+.btn{border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:9px 14px;cursor:pointer;font-weight:500;min-height:44px}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);font-weight:600}
+.btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent)}
+.btn.primary[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border:0;background:var(--surface);padding:9px 12px;cursor:pointer;min-height:44px;border-inline-start:1px solid var(--line)}
+.seg button:first-child{border-inline-start:0}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.tools select{min-height:44px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:0 10px;font-family:inherit;max-width:190px}
+.count{margin-inline-start:auto;color:var(--muted);font-size:.86rem}
+.audio-note{color:var(--muted);font-size:.85rem;margin:6px 0 0}
+.para{position:relative;margin:0;padding:14px 0;border-bottom:1px dashed var(--line);border-radius:8px}
+.para:last-of-type{border-bottom:0}
+.para.reading{background:var(--reading)}
+.para .en{margin:0;padding-left:44px;padding-right:8px;font-family:var(--story);font-size:1.28rem;line-height:2.15;direction:ltr;text-align:left;color:var(--ink)}
+.para .tr{margin:8px 0 2px;padding:10px 14px;background:var(--accent-soft);border-radius:10px;font-size:1.02rem;line-height:1.95;direction:rtl;text-align:right}
+.pplay{position:absolute;left:0;top:14px;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--surface);cursor:pointer;font-size:1rem;line-height:1}
+.pplay:hover{border-color:var(--accent)}
+.w{cursor:pointer;border-radius:4px;padding:0 2px;margin:0 -1px;
+  background:linear-gradient(transparent 12%, var(--hl-soft) 12%, var(--hl-soft) 92%, transparent 92%);
+  border-bottom:0;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.w:hover{background:linear-gradient(transparent 12%, var(--hl) 12%, var(--hl) 92%, transparent 92%)}
+.w.seen{background:linear-gradient(transparent 12%, var(--seen-soft) 12%, var(--seen-soft) 92%, transparent 92%)}
+.nohl .w{background:none}
+.nohl .w:hover{background:var(--hl-soft)}
+.storynav{display:flex;justify-content:space-between;gap:12px;margin-top:20px}
+.storynav .btn{flex:1;min-height:52px;font-size:1.02rem}
+.storynav .spacer{flex:1}
+.done{margin:22px 0 4px;text-align:center;color:var(--muted);font-size:.95rem}
+.pop{position:fixed;inset:0;z-index:50;display:flex;align-items:flex-end;justify-content:center}
+.pop[hidden]{display:none}
+.backdrop{position:absolute;inset:0;background:rgba(8,14,22,.5)}
+.sheet{position:relative;width:100%;max-width:560px;max-height:88vh;overflow:auto;background:var(--surface);border:1px solid var(--line);
+  border-radius:18px 18px 0 0;padding:22px 20px calc(22px + env(safe-area-inset-bottom,0px));box-shadow:var(--shadow);animation:up .18s ease-out}
+@keyframes up{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+@media (min-width:640px){.pop{align-items:center}.sheet{border-radius:18px}}
+@media (prefers-reduced-motion: reduce){.sheet{animation:none}}
+.close{position:absolute;top:10px;left:10px;width:44px;height:44px;border:1px solid var(--line);border-radius:50%;background:var(--surface);cursor:pointer;font-size:1.5rem;line-height:1}
+.close:hover{border-color:var(--accent)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px;padding-left:54px}
+.chip{font-size:.8rem;border-radius:999px;padding:3px 10px;border:1px solid var(--line);color:var(--muted)}
+.chip.cat{background:var(--accent-soft);border-color:transparent;color:var(--ink);font-weight:500}
+.chip.fix{background:var(--warn-bg);border-color:transparent;color:var(--ok);font-weight:600}
+.head-row{display:flex;align-items:center;gap:10px;direction:ltr}
+.head{font-family:var(--story);font-size:1.7rem;line-height:1.25;font-weight:700;margin:0;text-align:left}
+.say{flex:none;width:40px;height:40px;border:1px solid var(--line);border-radius:50%;background:var(--surface);cursor:pointer}
+.say:hover{border-color:var(--accent)}
+.inst{margin:6px 0 0;color:var(--muted);font-size:.86rem;direction:ltr;text-align:left}
+.sec{margin-top:16px}
+.sec h3{margin:0 0 3px;font-size:.82rem;color:var(--muted);font-weight:500}
+.sec .en-m{font-family:var(--story);font-size:1.08rem;direction:ltr;text-align:left;margin:0}
+.sec .ar-m{font-size:1.28rem;font-weight:600;margin:0;white-space:pre-line}
+.sec .note{margin:0;font-size:.92rem;background:var(--accent-soft);border-radius:10px;padding:8px 12px}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="brand"><h1>قصص الحفظيات التفاعلية</h1><span>اضغط على أي كلمة مظلّلة لتظهر بطاقة معناها</span></div>
+    <nav class="tabs" id="tabs" aria-label="القصص"></nav>
+  </div>
+</header>
+<main id="main"></main>
+<div class="pop" id="pop" hidden>
+  <div class="backdrop" id="backdrop"></div>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="pHead" id="sheet">
+    <button class="close" id="pClose" aria-label="إغلاق والرجوع إلى القصة">×</button>
+    <div class="chips" id="pChips"></div>
+    <div class="head-row"><h2 class="head" id="pHead"></h2><button class="say" id="pSay" aria-label="استمع للنطق">🔊</button></div>
+    <p class="inst" id="pInst"></p>
+    <div id="pBody"></div>
+  </div>
+</div>
+<script>
+const CAT={
+ coll:"متلازمة لفظية (Collocation)", cols:"متلازمة لفظية (Collocation)", collA:"متلازمة لفظية (Collocation)",
+ msg:"متلازمة: فعل + رسالة/اتصال (Collocation)",
+ phr:"فعل مركب (Phrasal Verb)", socphr:"فعل مركب — وسائل التواصل الاجتماعي",
+ imp:"ترك انطباع جيد وبدء محادثة (Making a good impression)",
+ idAnn:"مصطلحات الانزعاج (Idioms of Annoyance)", idiom:"تعبير اصطلاحي (Idiom)",
+ emoG:"صفات العواطف — قابلة للتدرج (Gradable)", emoU:"صفات العواطف — غير قابلة للتدرج (Ungradable)",
+ emoph:"عبارات تعبّر عن المشاعر (Expressing emotion)",
+ addU1:"مفردات إضافية — الوحدة 1",
+ comp:"اسم مركب — تهديد البيئة (Compound noun)", weather:"متلازمة الطقس (Weather collocation)",
+ sign:"العبارات الدالة (Signposting phrase)", decide:"التردد والاتفاق واتخاذ القرار",
+ cause:"لغة السبب والنتيجة والأفعال + حروف الجر", animal:"مفردات تصنيف الحيوانات",
+ synon:"مترادفات (Synonyms)",
+ news:"متلازمة الأخبار (News collocation)", newsadj:"صفات الأخبار (News adjective)",
+ crime:"مفردات الجريمة والصحافة", sensv:"أفعال حسية (Sensory verbs)", adv:"الظروف (Adverbs)",
+ degree:"درجة الكم (Degree words)", sens:"أوصاف حسية (Sensory descriptions)",
+ homo:"كلمة ذات معنيين (Homonym)", food:"صفات الطعام (Food adjectives)", cook:"أفعال الطهي (Cooking verbs)",
+ pref:"التعبير عن التفضيلات (Preferences)", intens:"صفات مكثفة (Intensified adjectives)",
+ house:"صفات المنازل والأماكن", perm:"مسموح / ممنوع (Permission)",
+ repair:"مفردات الإصلاح المنزلي (Household repair)", nomad:"متلازمات الرحّال الرقمي (Digital nomad)",
+ comparison:"المقارنة (Comparison)", env:"عبارات ومتلازمات بيئية", social:"مفردات القضايا الاجتماعية",
+ prove:"أفعال الإثبات (Prove / Set up / Fact)", vol:"مفردات التطوع والعمل الخيري", bully:"مفردات التنمر والإذلال",
+ prep:"التركيز على حرف الجر (Preposition focus)",
+ prefix:"سابقة (Prefix) — Word Building", suffix:"لاحقة (Suffix) — Word Building",
+ techgt:"مترادفات: الأدوات التقنية (Technological tools)", smart:"مفردات الأجهزة الذكية",
+ old:"مترادفات: ليس حديثًا (Not Modern)", tech:"مصطلحات تقنية إضافية", trend:"الاتجاهات (Trends)",
+ socmed:"مفردات وسائل التواصل الاجتماعي", adj:"صفات (Adjectives)", link:"الروابط (Linkers)",
+ succ:"كلمات النجاح والفشل (Success & Failure)", wealth:"مفردات الثراء (Wealth)",
+ bino:"الكلمات ذات الحدين (Binomials)", eea:"حفظ المعنى: English–English–Arabic",
+ connect:"ملخص الروابط (Connectors)"
+};
+const CAT_NOTE={
+ emoG:"مع الصفات القابلة للتدرج نستعمل: very / extremely / really / super / hugely / highly / incredibly.",
+ emoU:"مع الصفات غير القابلة للتدرج نستعمل: absolutely / completely / totally / utterly.",
+ intens:"Pretty / really / seriously تُستعمل مع النوعين.",
+ synon:"مترادفات مذكورة في الملف — نفس المعنى تقريبًا."
+};
+const POS={"n":"اسم (n)","v":"فعل (v)","adj":"صفة (adj)","adv":"ظرف (adv)","phr v":"فعل مركب (phr v)","phr":"عبارة (phr)","n, v":"اسم / فعل (n, v)"};
+
+/* ============================================================
+   القاموس الشامل: كل معاني الملف
+   ============================================================ */
+const D={
+/* ==== الوحدة 1 — التواصل والرسائل ==== */
+sendmsg:["Send a message","","msg","","يرسل رسالة"],
+spreadmsg:["Spread a message","","msg","","ينشر رسالة"],
+carrymsg:["Carry a message","","msg","","يحمل رسالة"],
+conveymsg:["Convey a message","","msg","","ينقل رسالة / يحمل معنى"],
+passonmsg:["Pass on a message","","msg","","يمرّر رسالة"],
+greeting:["Greeting","","msg","","تحية"],
+stayintouch:["Stay in touch","","msg","","يبقى على تواصل"],
+keeptouch:["Keep in touch","","msg","","يحفظ التواصل"],
+losetouch:["Lose touch","","msg","","يفقد التواصل"],
+establishcontact:["Establish contact","","msg","","يبدأ اتصالًا"],
+maintaincontact:["Maintain contact","","msg","","يُبقي الاتصال"],
+losecontact:["Lose contact","","msg","","يفقد الاتصال"],
+makecontact:["Make contact","","msg","","يُجري اتصالًا"],
+
+/* ==== الوحدة 1 — العواطف قابلة للتدرج ==== */
+frightened:["Frightened","","emoG","","خائف"],
+surprised:["Surprised","","emoG","","مندهش"],
+annoyed:["Annoyed","","emoG","","منزعج"],
+furious:["Furious","","emoG","","غاضب"],
+sad:["Sad","","emoG","","حزين"],
+tense:["Tense","","emoG","","متوتر"],
+ecstatic:["Ecstatic","","emoG","","فرحان"],
+bewildered:["Bewildered","","emoG","","محتار"],
+
+/* ==== الوحدة 1 — العواطف غير قابلة للتدرج ==== */
+terrified:["Terrified","","emoU","","مرتعب"],
+astonished:["Astonished","","emoU","","منذهل"],
+exasperated:["Exasperated","","emoU","","ساخط"],
+livid:["Livid","","emoU","","مغتاظ (شديد الغضب)"],
+devastated:["Devastated","","emoU","","محطَّم"],
+nervous:["Nervous","","emoU","","مشدود الأعصاب",1],
+thrilled:["Thrilled","","emoU","","مبتهج"],
+confused:["Confused","","emoU","","مرتبك"],
+
+/* ==== الوحدة 1 — الأفعال المركبة ==== */
+pickup:["Pick up","","phr","To receive","يلتقط إشارة"],
+bringabout:["Bring about","","phr","Cause something to happen","يسبّب / ينتج عنه"],
+takein:["Take in","","phr","Understand and remember","يفهم ويتذكّر (يستوعب)"],
+pointout:["Point out","","phr","Tell someone something","يشير إلى (مفهوم ما)"],
+makeout:["Make out","","phr","See with difficulty","يرى بصعوبة / يميّز"],
+wipeout:["Wipe out","","phr","Destroy","يدمّر"],
+spellout:["Spell out","","phr","Explain","يوضّح بالتفصيل"],
+figureout:["Figure out","","phr","Understand / solve","يفهم / يكتشف"],
+getacross:["Get across","","phr","Communicate","يوصل فكرة"],
+comeacross:["Come across","","phr","Meet","يقابل / يصادف"],
+
+/* ==== الوحدة 1 — ترك انطباع جيد ==== */
+breakice:["Break the ice","","imp","","يكسر الجمود"],
+favourable:["Make a favourable impression","","imp","","ترك انطباع إيجابي"],
+strikeup:["Strike up a conversation","","imp","","بدء محادثة"],
+havelaugh:["Have a laugh","","imp","","الضحك (يضحكان معًا)"],
+createbond:["Create a bond","","imp","","بناء رابط / علاقة قوية",1],
+compliment:["Pay somebody a compliment","","imp","","يجامل شخصًا"],
+smalltalk:["Make small talk","","imp","","إجراء محادثة قصيرة (كلام عابر)"],
+hititoff:["Hit it off","","imp","","ينسجم مع شخص (تنجح العلاقة بسرعة)",1],
+taketoyou:["Take to you","","imp","","يتقبّلك / يبدأ بمحبتك"],
+comeacrossas:["Come across as","","imp","","يبدو / يعطي انطباعًا بأنه…",1],
+
+/* ==== الوحدة 1 — مصطلحات الانزعاج ==== */
+jumpdown:["Jump down somebody's throat","","idAnn","React angrily","يردّ بغضب (ينفجر في وجه شخص)"],
+onspot:["Put somebody on the spot","","idAnn","Embarrass / force someone to answer a difficult question","يُحرج شخصًا بسؤال صعب"],
+firequestions:["Fire question(s) at someone","","idAnn","To ask a lot of questions","يمطر شخصًا بالأسئلة"],
+refusedrop:["Refuse to let something drop","","idAnn","To not stop talking about something","لا يتوقف عن الحديث في موضوع ما"],
+lastword:["Insist on having the last word","","idAnn","To have to make the final point","يصرّ على أن تكون له الكلمة الأخيرة"],
+wordedgeways:["Not get a word in edgeways","","idAnn","Inability to talk as someone talks all the time","لا يستطيع أن يقول كلمة لأن شخصًا آخر لا يتوقف عن الكلام"],
+
+/* ==== الوحدة 1 — عبارات المشاعر ==== */
+keepupnight:["It has been keeping me up at night.","","emoph","Anxiety — قلق شديد","لم أنم من القلق"],
+worstcould:["What is the worst that could happen?","","emoph","Anxiety — reassurance","ليست هناك حاجة للقلق"],
+worriedsick:["I am worried sick about…","","emoph","Anxiety","أنا قلق جدًا"],
+sigh:["I can breathe a sigh of relief now.","","emoph","Relief","أستطيع أن أتنفس الصعداء الآن"],
+weight:["That is a weight off my mind.","","emoph","Relief","أخيرًا ارتحت"],
+thankg:["Thank goodness.","","emoph","Relief","الحمد لله"],
+upthewall:["…is driving me up the wall.","","emoph","Annoyance","يدفعني إلى الجنون / لم أعد أحتمله",1],
+getsnerves:["…really gets on my nerves.","","emoph","Annoyance","يثير أعصابي"],
+upto:["I have had it up to here with…","","emoph","Annoyance","لقد سئمت من ذلك تمامًا"],
+kidding:["You have got to be kidding me!","","emoph","Surprise / Disbelief","أنا لا أصدّقك"],
+outofhere:["Get out of here!","","emoph","Surprise / Disbelief","اخرج من هنا! (تعبير عن الدهشة)"],
+whowould:["Who would have thought it?","","emoph","Surprise / Disbelief","مَن كان يظن أن هذا سيحصل؟"],
+dumps:["I am feeling a bit down in the dumps.","","emoph","Sadness","أشعر بالإحباط قليلًا / هذا فظيع"],
+bluephr:["I am feeling a bit blue.","","emoph","Sadness","حزين جدًا"],
+heartbroken:["I am heartbroken.","","emoph","Sadness","حرق قلبي"],
+walkingair:["I am walking on air!","","emoph","Enjoyment / Happiness","أنا سعيد جدًا (أكاد أطير من الفرح)"],
+cantstop:["I can't stop smiling!","","emoph","Enjoyment / Happiness","لا أستطيع التوقف عن الابتسام"],
+
+/* ==== الوحدة 1 — مفردات إضافية ==== */
+groom:["Groom","v","addU1","To brush and clean fur","يُنظّف الحيوان (تمشيط وتنظيف الفراء)"],
+omnivore:["Omnivore","n","addU1","A living being that eats plants and animals","آكل لحوم ونباتات"],
+rival:["Rival","n","addU1","A person or a group that competes with others","علاقة تنافسية / منافس"],
+
+/* ==== الوحدة 2 — أسماء مركبة بيئية ==== */
+acidrain:["Acid rain","","comp","Rains that contain a lot of pollution","أمطار حمضية"],
+endangered:["Endangered species","","comp","Types of animals in danger of extinction","أنواع مهددة بالانقراض"],
+exhaust:["Exhaust fumes","","comp","Poisonous gases produced by engines of non-electric vehicles","أدخنة عادمة"],
+fossil:["Fossil fuel(s)","","comp","Examples of this are coal, oil, gas","وقود أحفوري"],
+globalwarming:["Global warming","","comp","Gradual increase in the Earth's temperature","الاحترار العالمي (ارتفاع حرارة الأرض تدريجيًا)",1],
+greenhouse:["Greenhouse effect (gases)","","comp","Process by which gases trapped in the atmosphere cause the planet to heat up","ظاهرة الاحتباس الحراري / تأثير الغازات الدفيئة"],
+habitatloss:["Habitat loss","","comp","Disappearance of areas that are home to plants and animals","فقدان الموائل الطبيعية",1],
+ozone:["Ozone layer","","comp","Part of the stratosphere which limits the amount of ultraviolet radiation reaching the earth","طبقة الأوزون"],
+renewable:["Renewable energy","","comp","Power produced by wind, sun etc.","الطاقة المتجددة"],
+erosion:["Soil erosion","","comp","Gradual destruction of the ground by weather or people","تعرية التربة"],
+toxic:["Toxic waste","","comp","Chemicals and other harmful waste products","نفايات سامة"],
+vehicleemis:["Vehicle emissions","","comp","Synonym for exhaust fumes","انبعاثات المركبات"],
+waterscarcity:["Water scarcity","","comp","Lack of water","ندرة المياه (شحّ المياه)"],
+windturbine:["Wind turbine(s)","","comp","A machine used to produce electric power","توربينات الرياح",1],
+poacher:["Poacher","","comp","Someone who illegally catches / hunts animals","صيّاد جائر (يصطاد بشكل غير قانوني)",1],
+
+/* ==== الوحدة 2 — الطقس ==== */
+blistering:["Blistering heat","","weather","","حرارة شديدة"],
+freak:["Freak weather","","weather","","طقس غير اعتيادي"],
+galeforce:["Gale-force winds","","weather","","رياح عاتية"],
+heavyrain:["Heavy rain / snow","","weather","","مطر / ثلج غزير"],
+highhumidity:["High temperatures / humidity","","weather","","درجات حرارة / رطوبة عالية"],
+scorching:["Scorching heat","","weather","","حرّ حارق"],
+soaring:["Soaring temperatures","","weather","","ارتفاع درجات الحرارة"],
+subzero:["Sub-zero temperatures","","weather","","درجات حرارة دون الصفر"],
+torrential:["Torrential rain","","weather","","أمطار غزيرة"],
+drought:["Drought","","weather","","جفاف"],
+
+/* ==== الوحدة 2 — العبارات الدالة ==== */
+gonnatalk:["I'm going to be talking about …","","sign","Introducing the topic","التعريف بالموضوع"],
+inother:["In other words, …","","sign","Paraphrasing what was just said","لإعادة صياغة ما قيل"],
+second:["The second thing is …","","sign","Sequencing an argument","تسلسل النقاش"],
+whereas:["… whereas …","","sign","Contrasting two ideas","تناقض فكرتين (بينما)"],
+sumup:["So, to sum up, …","","sign","Concluding","الختام (باختصار)"],
+
+/* ==== الوحدة 2 — التردد / الاتفاق / الاختلاف / القرار ==== */
+torn:["I'm torn between … and …","","decide","Indecision","أنا متردد بين … و …"],
+onfence:["I'm on the fence (about)","","decide","Indecision","لست متأكدًا بعد (لم أحسم أمري)"],
+secondthoughts:["I'm having second thoughts.","","decide","Indecision","بدأت أفكّر بالأمر من جديد (أعيد التفكير)"],
+cantmakeup:["I can't make up my mind.","","decide","Indecision","لا أستطيع أن أحسم قراري"],
+cantfinger:["I can't put my finger on it, but …","","decide","Indecision","لا أستطيع أن أحدد ما هو بالضبط، لكن …"],
+spoton:["You're spot on!","","decide","Agreement","معك حق تمامًا!"],
+absolute:["That's what I was going to say! / Absolutely!","","decide","Agreement","هذا ما كنت سأقوله! / تمامًا!"],
+goodpoint:["That's a good point, but …","","decide","Agreement (partial)","هذه نقطة جيدة، لكن …"],
+ontheone:["On the one hand … but on the other hand,","","decide","Agreement (balanced)","من ناحية … ولكن من ناحية أخرى"],
+doesntgrab:["It doesn't grab me.","","decide","Disagreement","لا تعجبني الفكرة"],
+wrongtrack:["I think we're on the wrong track.","","decide","Disagreement","أظن أننا نسلك الطريق الخاطئ"],
+anotheropt:["Ok, but another option might be …","","decide","Disagreement (soft)","حسنًا، لكن قد يكون هناك خيار آخر …"],
+seriously:["Seriously?!","","decide","Disagreement","بجدية؟!"],
+letsmake:["So, let's make a decision on this.","","decide","Decision","إذن دعونا نتّخذ قرارًا في هذا الأمر"],
+shall:["Okay, so shall we go with …?","","decide","Decision","حسنًا، فهل نختار …؟"],
+lookslike:["It looks as if we agree that …","","decide","Decision","يبدو أننا متفقون على أنّ …"],
+
+/* ==== الوحدة 2 — السبب والنتيجة ==== */
+rely:["Rely on","","cause","","يعتمد على"],
+referto:["Refer to","","cause","","يعود على / يشير إلى"],
+directedto:["Directed to","","cause","","يُوَجَّه إلى"],
+learnabout:["Learn about","","cause","","يتعلّم عن"],
+controlover:["Control over","","cause","","يتحكّم في"],
+hazardous:["Hazardous","","cause","","خطير"],
+asaresult:["As a result of","","cause","","نتيجةً لـ"],
+consequence:["As a consequence of","","cause","","نتيجةً لـ (بسبب)"],
+duel:["Due to","","cause","","بسبب"],
+giverise:["Give rise to","","cause","","يؤدي إلى / يتسبب في"],
+leadto:["Lead to something","","cause","","يؤدي إلى شيء"],
+resultfrom:["Result from","","cause","","ينجم عن"],
+resultin:["Result in","","cause","","ينتج عنه"],
+
+/* ==== الوحدة 2 — تصنيف الحيوانات ==== */
+backbone:["Backbone","n","animal","","عمود فقري"],
+critically:["Critically endangered","","animal","","مهدد بالانقراض بشكل حرج"],
+crustacean:["Crustacean","n","animal","","قشري (كالسرطان والجمبري)"],
+cuddly:["Cuddly","adj","animal","","لطيف يُحبّ احتضانه"],
+fin:["Fin","n","animal","","زعنفة"],
+nocturnal:["Nocturnal","adj","animal","Awake and active at night","ليلي"],
+primate:["Primate","n","animal","","من الرئيسيات"],
+scale:["Scale","n","animal","","حرشفة"],
+slimy:["Slimy","adj","animal","Covered in liquid and not nice to touch","لزج"],
+furry:["Furry","adj","animal","Covered in thick, soft hair","مكسو بالفرو"],
+invertebrate:["Invertebrate","n","animal","An animal without a backbone","لا فقاري (حيوان بلا عمود فقري)"],
+makeup:["Make up","phr v","animal","To constitute","يشكّل (يُكوِّن)"],
+mammal:["Mammal","n","animal","","ثديي"],
+predator:["Natural predator","","animal","","المفترس الطبيعي",1],
+pesticide:["Pesticide","n","animal","","مبيد حشري"],
+reptile:["Reptile","n","animal","","زاحف"],
+skeleton:["Skeleton","n","animal","","هيكل عظمي"],
+solitary:["Solitary","adj","animal","Usually alone, not with others","وحيد (يعيش بمفرده)"],
+extinct:["Extinct","adj","animal","","منقرض"],
+marine:["Marine","adj","animal","Related to the sea","بحري"],
+
+/* ==== الوحدة 4 — المترادفات ==== */
+decreaseS:["Decrease","v","synon","go down / drop","ينقص / يقلل"],
+fakeS:["Fake","n","synon","fraud / hoax","زيف / وهم"],
+reliableS:["Reliable","","synon","dependable / trustworthy","موثوق / جدير بالثقة"],
+mysteryS:["Mystery","","synon","enigma / puzzle","غموض"],
+signsS:["Signs","","synon","hints / clues","إشارات / دلائل"],
+stateS:["State","v","synon","claim / maintain","يصرّح / يوضّح"],
+strangeS:["Strange","","synon","bizarre / weird","غريب / عجيب"],
+uncoverS:["Uncover","","synon","expose / reveal","يكشف / يظهر"],
+
+/* ==== الوحدة 4 — الأخبار ==== */
+attentionspan:["Attention span","","news","","مدى الانتباه (مدة التركيز)",1],
+clickbait:["Clickbait headlines","","news","","عناوين خادعة لجذب النقرات",1],
+exposecorr:["Expose corruption","","news","","يفضح الفساد"],
+generaterev:["Generate revenue","","news","","توليد الإيرادات"],
+goviral:["Go viral","","news","","تنتشر بسرعة"],
+hitheadlines:["Hit the headlines","","news","","تتصدّر العناوين"],
+publicint:["In the public interest","","news","","في المصلحة العامة"],
+bothsides:["Present both sides of the story","","news","","عرض جانبَي القصة"],
+raiseaw:["Raise awareness","","news","","رفع مستوى الوعي"],
+shedlight:["Shed light on something","","news","","تسليط الضوء على شيء ما"],
+verify:["Verify sources","","news","","التحقق من المصادر"],
+
+/* ==== الوحدة 4 — صفات الأخبار ==== */
+hardhitting:["Hard-hitting","","newsadj","Includes strong criticism","حادّ الانتقاد (انتقادات لاذعة)"],
+quirky:["Quirky","","newsadj","Unusual in an interesting way","غريب / غير معتاد بطريقة مثيرة"],
+heartbreaking:["Heartbreaking","","newsadj","Very sad","مفجع / حزين جدًا"],
+newsworthy:["Newsworthy","","newsadj","Interesting enough to be reported","جدير بالنشر"],
+balanced:["Balanced","","newsadj","Considering all sides equally","متوازن"],
+topical:["Topical","","newsadj","Related to things that are happening","موضوعي (متعلق بأحداث الساعة)"],
+offrecord:["Off the record","","newsadj","Not meant to be publicly reported","غير رسمي (لا يُنشر)",1],
+sensational:["Sensational","","newsadj","Shocking and exciting, not serious","مثير / صادم (غير جادّ)"],
+exclusive:["Exclusive","","newsadj","(A news story) published only in one place","حصري"],
+heartwarming:["Heartwarming","","newsadj","Causing feelings of happiness","مبهج / يثلج الصدر"],
+
+/* ==== الوحدة 4 — الجريمة والصحافة ==== */
+accusation:["Accusation","n","crime","","اتهام"],
+activist:["Activist","n","crime","","ناشط"],
+allegation:["Allegation","n","crime","","ادعاء"],
+obstruct:["Obstruct","v","crime","","يعرقل / يعوق"],
+pavement:["Pavement","n","crime","","رصيف"],
+replacement:["Replacement","n","crime","","استبدال / بديل"],
+request:["Request","n","crime","","طلب"],
+suspension:["Suspension","n","crime","","تعليق / إيقاف (عن العمل)"],
+tension:["Tension","n","crime","","توتّر"],
+
+/* ==== الوحدة 4 — متلازمات إضافية ==== */
+comeup:["Come up with something","","coll","","ابتكار / التوصل إلى فكرة"],
+putin:["Put something in","","coll","","يضع / يقدّم شيئًا"],
+release:["Release a statement","","coll","","يُصدر بيانًا"],
+reportpolice:["Report something to the police","","coll","","إبلاغ الشرطة عن شيء"],
+seize:["Seize an opportunity","","coll","","يغتنم الفرصة"],
+refute:["Refute the allegation","","coll","","يدحض الادعاء"],
+capture:["Capture an image","","coll","","يلتقط صورة"],
+cropped:["Cropped","adj","coll","","مقصوصة / مقطوعة"],
+evoke:["Evoke","v","coll","","يثير / يستحضر"],
+landscape:["Landscape photo","n","coll","","صورة المناظر الطبيعية / صورة أفقية"],
+poignant:["Poignant","adj","coll","","مؤثّرة"],
+pose:["Pose","v","coll","","يتظاهر / يتصنّع"],
+subjectmatter:["Subject matter","n","coll","","الموضوع / المسألة"],
+compose:["Compose","v","coll","","يؤلّف / يركّب"],
+
+/* ==== الوحدة 4 — الأفعال الحسّية ==== */
+yelled:["Yelled","v","sensv","To shout loudly, because you are excited or angry","صرخ / هتف"],
+raced:["Raced","v","sensv","To go somewhere as quickly as possible","ركض / أسرع"],
+wandering:["Wandering","v","sensv","To walk in a casual way, often in no particular direction","يتجوّل (بدون هدف)"],
+spotted:["Spotted","v","sensv","To notice something or someone","لاحظ"],
+muttering:["Muttering","v","sensv","To speak so quietly that you cannot be heard easily","يتمتم"],
+peered:["Peered","v","sensv","To look at something closely and carefully","حدّق"],
+glanced:["Glanced","v","sensv","To take a quick look at something","لمح / ألقى نظرة سريعة"],
+bellowed:["Bellowed","v","sensv","To shout angrily in a low deep voice","رفع صوته عاليًا (زأر غاضبًا)"],
+shuffle:["Shuffle","v","sensv","","يمشي متثاقلًا (يجرجر قدميه)"],
+shriek:["Shriek","v","sensv","","يصرخ صرخة حادّة"],
+tiptoe:["Tiptoe","v","sensv","","يمشي على أطراف الأصابع"],
+
+/* ==== الوحدة 4 — الظروف ==== */
+obviously:["Obviously","adv","adv","","بشكل واضح"],
+theoretically:["Theoretically","adv","adv","","نظريًا"],
+disappointingly:["Disappointingly","adv","adv","","بشكل محبط"],
+foolishly:["Foolishly","adv","adv","","بحماقة"],
+presumably:["Presumably","adv","adv","","من المفترض"],
+apparently:["Apparently","adv","adv","","على ما يبدو"],
+surely:["Surely","adv","adv","","بالتأكيد"],
+fortunately:["Fortunately","adv","adv","","لحسن الحظ"],
+unbelievably:["Unbelievably","adv","adv","","بشكل لا يُصدَّق"],
+clearly:["Clearly","adv","adv","","بشكل واضح"],
+personally:["Personally","adv","adv","","شخصيًا"],
+
+/* ==== الوحدة 4 — درجة الكم ==== */
+slightly:["Slightly / a bit / marginally","adv","degree","","بشكل طفيف"],
+considerably:["Significantly / considerably","adv","degree","","بشكل كبير / بشكل ملحوظ"],
+oblige:["Oblige","v","degree","","يُلزم / يجبر"],
+succeed:["Succeed","v","degree","","ينجح"],
+permit:["Permit","v","degree","","يسمح"],
+nowherenear:["Nowhere near","","degree","","ليس قريبًا من"],
+
+/* ==== الوحدة 5 — أوصاف حسّية ==== */
+aroma:["Aroma","n","sens","The smell of something delicious cooking","رائحة زكية (لطعام لذيذ)"],
+bee:["Bee buzzing","","sens","","طنين النحل"],
+birds:["Birds chirping","","sens","","زقزقة الطيور",1],
+balloon:["Balloon popping","","sens","","فرقعة البالون"],
+coarse:["Coarse","adj","sens","","خشن"],
+crunchsnow:["Crunching of snow","","sens","","سحق الثلج (صوت الخطوات عليه)"],
+fluffy:["Fluffy","adj","sens","","منفوش"],
+humming:["Machine humming","","sens","","أزيز (طنين) الآلة"],
+sizzle:["Meat sizzling","","sens","","طشطشة اللحم أثناء الطهي",1],
+mouthwater:["Mouth-watering","adj","sens","Delicious-tasting food","يسيل له اللعاب"],
+overpowering:["Overpowering","adj","sens","A smell which is too strong","طاغٍ / قوي جدًا (لا يُحتمل)",1],
+screech:["Parrot screeching","","sens","","صراخ الببغاء"],
+roar:["Roar of an engine","","sens","","هدير المحرك",1],
+rustling:["Rustling of paper","","sens","","حفيف الورق"],
+scent:["Scent","n","sens","A pleasant smell of flowers","رائحة زكية / شذى (للأزهار)"],
+smelly:["Smelly","adj","sens","Really bad smells","كريه الرائحة"],
+silky:["Silky","adj","sens","","حريري"],
+spiky:["Spiky","adj","sens","","شائك"],
+squishy:["Squishy","adj","sens","","طري ورخو",1],
+stench:["Stench","n","sens","","رائحة نتنة / فظيعة"],
+sticky:["Sticky","adj","sens","","لزج / دبق"],
+subtle:["Subtle","adj","sens","Something difficult to detect","خفيّ / دقيق (يصعب ملاحظته)",1],
+thud:["Thud","n","sens","","صوت مكتوم (ارتطام)"],
+
+/* ==== الوحدة 5 — الكلمات ذات معنيين ==== */
+blind:["Blind","","homo","","1) مكفوف (unable to see)\n2) غير مدرك / غافل (unaware)",1],
+pursue:["Pursue","","homo","","1) يمارس (مهنة / هواية)\n2) يلاحق"],
+vision:["Vision","","homo","","1) رؤية مستقبلية\n2) الرؤية (قوة البصر)",1],
+putoff:["Put off","","homo","","1) ينفّر / يُثبّط\n2) يؤجّل",1],
+realise:["Realise / Realize","","homo","","1) يحقّق (حلمًا)\n2) يدرك / يعرف"],
+tough:["Tough","","homo","","1) صعب\n2) قوي / عنيد"],
+
+/* ==== الوحدة 5 — مصطلحات ==== */
+cometoterms:["Come to terms with something","","idiom","","يتقبّل الأمر ويتأقلم معه",1],
+spreadword:["Spread the word about something","","idiom","","ينشر المعلومات (يُخبر الناس)"],
+capableof:["Capable of doing","","idiom","","قادر على فعل"],
+adjustto:["Adjust to","","idiom","","يتكيّف مع"],
+desperate:["Desperate to","","idiom","","يتوق بشدة إلى / متلهّف لـ",1],
+
+/* ==== الوحدة 5 — صفات الطعام ==== */
+bland:["Bland","adj","food","","خالٍ من النكهة",1],
+crunchy:["Crunchy","adj","food","","مقرمش"],
+mild:["Mild","adj","food","","لطيف المذاق (غير حارّ)"],
+runny:["Runny","adj","food","","سائل / مائع"],
+savoury:["Savoury","adj","food","","مالح وشهي (غير حلو)"],
+smooth:["Smooth","adj","food","","ناعم"],
+spicy:["Spicy","adj","food","","متبّل / حارّ"],
+tasty:["Tasty","adj","food","","لذيذ"],
+thick:["Thick","adj","food","","سميك / كثيف"],
+watery:["Watery","adj","food","","مائي / مُخفَّف",1],
+gross:["Gross","adj","food","","مقرف / مقزّز"],
+impressive:["Impressive","adj","food","","مثير للإعجاب / مدهش"],
+mindblowing:["Mind-blowing","adj","food","","مذهل جدًا"],
+petrified:["Petrified","adj","food","","مرتعب (متجمّد من الخوف)",1],
+
+/* ==== الوحدة 5 — أفعال الطهي ==== */
+slice:["Slice","v","cook","","يقطّع إلى شرائح"],
+peel:["Peel","v","cook","","يقشّر"],
+pan:["Pan","n","cook","","مقلاة"],
+stir:["Stir","v","cook","","يقلّب / يحرّك"],
+boil:["Boil","v","cook","","يغلي"],
+simmer:["Simmer","v","cook","","يطبخ على نار هادئة"],
+foodprocessor:["Food processor","n","cook","","محضّرة الطعام"],
+whizz:["Whizz","v","cook","","يخلط بالخلاط (يخفق)",1],
+puree:["Puree","n","cook","","هريس"],
+chill:["Chill","v","cook","","يبرّد"],
+
+/* ==== الوحدة 5 — التعبير عن التفضيلات ==== */
+whichprefer:["Which do / would you prefer? … or …?","","pref","Asking about preferences","أيّهما تفضّل؟ … أم …؟"],
+whatrather:["What would you rather do? … or …?","","pref","Asking about preferences","أيّهما تفضّل أن تفعل؟ … أم …؟"],
+prefergerund:["I prefer (gerund) to … rather than …","","pref","Expressing general preferences","أفضّل فعل … على …"],
+donteither:["I don't like either of them.","","pref","Expressing general preferences","لا يعجبني أيّهما"],
+likeboth:["I like them both equally.","","pref","Expressing general preferences","يعجبانني بالتساوي"],
+genfavour:["I generally favour … over …","","pref","Expressing general preferences","أفضّل عمومًا … على …"],
+prefer:["I'd prefer (to) …","","pref","Making a choice","أفضّل أن …"],
+rather:["I'd rather …","","pref","Making a choice","أفضّل أن …"],
+sooner:["I'd sooner (do) …","","pref","Making a choice","أفضّل / كنت أفضّل أن أفعل …"],
+givenchoice:["Given the choice, …","","pref","Making a choice","لو أُتيح لي الاختيار …"],
+goforany:["I'd go for … any day / every time.","","pref","Making a choice","أختار … في أي وقت / دائمًا"],
+slight:["I have a (slight) preference for …","","pref","Making a choice","لدي ميل (طفيف) إلى …"],
+itsup:["It's up to you.","","pref","Giving someone else the choice","الأمر عائد إليك"],
+yourcall:["It's your call.","","pref","Giving someone else the choice","القرار قرارك"],
+easy:["I'm easy.","","pref","Giving someone else the choice","لا مانع لديّ (أي خيار يناسبني)"],
+whatever:["Whatever / Wherever / Whichever you prefer.","","pref","Giving someone else the choice","أيًّا كان ما تفضّله"],
+
+/* ==== الوحدة 5 — صفات مكثفة ==== */
+deafening:["Deafening","adj","intens","","صاخب جدًا / يصمّ الآذان (ungradable)"],
+fascinating:["Fascinating","adj","intens","","رائع / ساحر / جذّاب للغاية (ungradable)"],
+interesting:["Interesting","adj","intens","","ممتع / شيّق (gradable)"],
+loud:["Loud","adj","intens","","عالٍ (الصوت) / صاخب (gradable)"],
+ridiculous:["Ridiculous","adj","intens","","سخيف / مثير للسخرية (ungradable)"],
+scared:["Scared","adj","intens","","خائف (gradable)"],
+silly:["Silly","adj","intens","","أحمق / سخيف (gradable)"],
+
+/* ==== الوحدة 6 — صفات المنازل ==== */
+compact:["Compact","adj","house","","مدمج / صغير الحجم ومنظَّم",1],
+cramped:["Cramped","adj","house","","ضيّق / مساحة غير كافية"],
+denselypop:["Densely populated","adj","house","","المكتظّة بالسكان"],
+mediumsized:["Medium-sized","adj","house","","متوسط الحجم"],
+excess:["Excess","adj","house","","فائض / زائد عن الحد"],
+confined:["Confined","adj","house","","مقيَّد / مقصور على"],
+
+/* ==== الوحدة 6 — مسموح/ممنوع ==== */
+allowed:["Allowed","","perm","","مسموح"],
+forbidden:["Forbidden","","perm","","ممنوع"],
+managed:["Managed","","perm","","مخطَّط / مُدار"],
+obliged:["Obliged","","perm","","مُلزَم"],
+permitted:["Permitted","","perm","","مسموح به"],
+required:["Required","","perm","","مطلوب"],
+succeeded:["Succeeded","","perm","","ناجح"],
+
+/* ==== الوحدة 6 — درجة (كلمات المقارنة) ==== */
+much:["Much","","degree","Much (formal, general)","بكثير / أكثر بكثير"],
+considerablyD:["Considerably","adv","degree","Much (formal)","بشكل كبير / بشكل ملحوظ (رسمي)",1],
+significantlyD:["Significantly","adv","degree","Much (formal)","بشكل ملحوظ (رسمي)"],
+alot:["A lot","","degree","Much (informal)","كثيرًا (عاميّ)"],
+far:["Far","adv","degree","Much (informal)","بكثير (عاميّ)"],
+miles:["Miles","","degree","Much (informal)","بكثير جدًا (عاميّ)"],
+way:["Way","","degree","Much (informal)","بكثير (عاميّ)"],
+abit:["A bit","","degree","","قليلًا / بشكل طفيف"],
+slightlyD:["Slightly","adv","degree","A bit (formal)","بشكل طفيف / قليلًا (رسمي)"],
+marginally:["Marginally","adv","degree","A bit (formal / neutral)","بشكل طفيف جدًا (رسمي/محايد)"],
+notnearly:["Not nearly","","degree","","ليس قريبًا (أقل بكثير)"],
+nothinglike:["Nothing like","","degree","Not nearly (formal)","لا يشبه إطلاقًا (رسمي)"],
+
+/* ==== الوحدة 6 — المقارنة ==== */
+comparedwith:["Compared with / to","","comparison","","للمقارنة بين الأشياء"],
+incomparison:["In / by comparison with","","comparison","","للمقارنة مع شيء آخر — تُستعمل أكثر في الكتابة الرسمية"],
+whereasbut:["Whereas / but","","comparison","","لربط جمل متعاكسة أو متناقضة"],
+
+/* ==== الوحدة 6 — الإصلاح المنزلي ==== */
+breakdown:["Break down","phr v","repair","","يتعطّل"],
+brush:["Brush","n","repair","","فرشاة"],
+carpetstain:["Carpet stain","n","repair","","بقعة على السجاد",1],
+carryout:["Carry out","phr v","repair","","ينفّذ / يقوم بـ"],
+changebulb:["Change a bulb","","repair","","يغيّر / يصلح المصباح"],
+clearup:["Clear up","phr v","repair","","يرتّب / ينظّف",1],
+decorate:["Decorate a room","","repair","","يزيّن الغرفة"],
+dishcloth:["Dishcloth","n","repair","","قطعة قماش لتنظيف الصحون",1],
+doup:["Do up","phr v","repair","","يجدّد / يرمّم (يزيّن)",1],
+dustpan:["Dustpan","n","repair","","جاروف الغبار (مجرفة القمامة)",1],
+fix:["Fix","v","repair","","يصلح"],
+flattyre:["Flat tyre","","repair","","إطار مثقوب / فارغ من الهواء",1],
+getridof:["Get rid of","phr v","repair","","يتخلّص من"],
+label:["Label","v","repair","","يضع ملصقًا / يعنون",1],
+leakingpipe:["Leaking pipe","","repair","","أنبوب يتسرّب منه الماء",1],
+maskingtape:["Masking tape","n","repair","","شريط لاصق"],
+mend:["Mend","v","repair","","يصلح"],
+mopup:["Mop up","phr v","repair","","يمسح (يجفّف) السائل"],
+pickupobj:["Pick up","phr v","repair","","يجمع / يلتقط"],
+puddle:["Puddle","n","repair","","بركة ماء صغيرة"],
+remove:["Remove","v","repair","","يزيل"],
+replace:["Replace","v","repair","","يستبدل"],
+runout:["Run out of","phr v","repair","","ينفد ما لديه من",1],
+scratched:["Scratched screen","","repair","","شاشة مخدوشة"],
+shattered:["Shattered glass","","repair","","زجاج محطَّم",1],
+shrink:["Shrink","v","repair","","ينكمش / يتقلّص"],
+soak:["Soak","v","repair","","ينقع / يتشرّب"],
+sweepup:["Sweep up","phr v","repair","","يكنس",1],
+tangled:["Tangled leads","","repair","","أسلاك أو خيوط متشابكة"],
+wipedown:["Wipe down","phr v","repair","","يمسح / ينظّف"],
+
+/* ==== الوحدة 6 — الرحّال الرقمي ==== */
+digitalnomad:["Digital nomad","n","nomad","","الرحّال الرقمي (العامل عن بعد)"],
+homecomforts:["Home comforts","n","nomad","","وسائل الراحة المنزلية"],
+onthemove:["On the move","","nomad","","أثناء التنقل / سريع الحركة"],
+putroots:["Put down roots","","nomad","","يستقرّ (يبني جذورًا في مكان)"],
+settledown:["Settle down","phr v","nomad","","يستقرّ / يطمئنّ"],
+tieddown:["(Be) tied down to one place","","nomad","","أن يكون مقيَّدًا بمكان واحد"],
+workremotely:["Work remotely","","nomad","","العمل عن بعد"],
+coworking:["Co-working space","","nomad","","مساحة عمل مشتركة"],
+
+/* ==== الوحدة 7 — بيئية ==== */
+contaminate:["Contaminate fresh water supplies","","env","","تلويث إمدادات المياه العذبة"],
+brokenpipes:["Broken pipes","","env","","الأنابيب المكسورة"],
+envprob:["Environmental problems","","env","","المشاكل البيئية"],
+installtoilets:["Install new toilets","","env","","تركيب مراحيض جديدة"],
+naturaldis:["Natural disasters","","env","","الكوارث الطبيعية"],
+waterfilters:["Provide water filters","","env","","توفير فلاتر المياه"],
+
+/* ==== الوحدة 7 — قضايا اجتماعية ==== */
+enforce:["Enforce","v","social","","يفرض / ينفّذ (القانون)"],
+equal:["Equal","adj","social","","متساوٍ"],
+expand:["Expand","v","social","","يتوسّع / يمدّد"],
+genderequality:["Gender equality","n","social","","المساواة بين الجنسين"],
+homelessness:["Homelessness","n","social","","التشرّد"],
+immigration:["Immigration","n","social","","هجرة"],
+institution:["Institution","n","social","","مؤسسة"],
+justify:["Justify","v","social","","يبرّر"],
+health:["Health","","social","","الصحة"],
+poverty:["Poverty","","social","","فقر"],
+racism:["Racism","","social","","عنصرية"],
+unemployment:["Unemployment","","social","","بطالة"],
+environment:["Environment","","social","","بيئة"],
+facilities:["Facilities","","social","","مرافق"],
+opportunities:["Opportunities","","social","","فرص"],
+
+/* ==== الوحدة 7 — الإثبات ==== */
+prove:["Prove","v","prove","","يثبت / يبرهن"],
+test:["Test","v","prove","","يفحص / يتحقق"],
+setout:["Set out","v","prove","","يبدأ / ينطلق"],
+setup:["Set up","v","prove","","يرتّب / يركّب / يؤسّس"],
+overword:["Over (ages, speed, amounts)","","prove","","أكثر (مع الأعمار والسرعة والكميات)"],
+aboveword:["Above","","prove","","فوق (الموقع الفيزيائي)"],
+thefact:["The fact (that)","","prove","","الحقيقة (أنّ)"],
+infact:["In fact","","prove","","في الحقيقة"],
+
+/* ==== الوحدة 7 — متلازمات ==== */
+differentangle:["Different angle","","collA","","زاوية مختلفة"],
+brightideas:["Bright ideas","","collA","","أفكار مشرقة"],
+provesright:["Prove something right","","collA","","يُثبت صحة شيء ما"],
+sharethoughts:["Share your thoughts","","collA","","شارك بأفكارك"],
+
+/* ==== الوحدة 7 — التطوع ==== */
+anonymous:["Anonymous","","vol","","مجهول (الهوية)"],
+foundation:["Foundation","","vol","","مؤسسة"],
+industrious:["Industrious","","vol","","مجتهد"],
+intern:["Intern","","vol","","متدرّب"],
+commission:["Commission","","vol","","عمولة"],
+illequipped:["Ill-equipped","","vol","","غير مجهّز بشكل كافٍ"],
+integral:["Integral","","vol","","جوهري / أساسي"],
+proceeds:["Proceeds","","vol","","العائدات"],
+
+/* ==== الوحدة 7 — التنمر ==== */
+fatshame:["Fat-shame somebody","","bully","","يسخر من شخص بسبب وزنه"],
+maliciously:["Maliciously","","bully","","بخبث"],
+mock:["Mock somebody","","bully","","يسخر من شخص ما"],
+lastlaugh:["Have the last laugh","","bully","","ينتصر في النهاية (له الضحكة الأخيرة)",1],
+humiliate:["Humiliate somebody","","bully","","يُذلّ شخصًا"],
+shrugoff:["Shrug something off","","bully","","يتجاهل شيئًا (لا يبالي به)",1],
+
+/* ==== الوحدة 7 — تركيز حرف الجر ==== */
+protectagainst:["Protect against","","prep","Take care of someone or something — Group A","يحمي من"],
+takefrom:["Take / learn / eat from","","prep","eat out of — Group B","يأخذ / يتعلّم / يأكل من"],
+livein:["Live in","","prep","Group C","يعيش في"],
+liveon:["Live on","","prep","Group C — depend on","يعتمد على / يعيش على"],
+participate:["Participate (in)","","prep","To take part in something — Group C","يشارك في"],
+surviveon:["Survive on","","prep","Stay alive by using the object of the sentence — Group D","ينجو / يعيش بالاعتماد على"],
+callout:["Call out","","prep","Say something loudly — Group E","يصرخ / ينادي"],
+dangerto:["Danger to","","prep","Group E","خطر على"],
+helpto:["Help to","","prep","Group E","يساعد على"],
+dealwith:["Deal with","phr v","prep","Take action to solve a problem — Group F","يتعامل مع"],
+
+/* ==== الوحدة 8 — الاتجاهات ==== */
+decline:["Decline","n, v","trend","","ينقص / نقص (تراجع)"],
+decrease:["Decrease","n, v","trend","","ينخفض / انخفاض / تقليل"],
+downwards:["Downwards","adv","trend","","نزولًا / باتجاه الأسفل"],
+drop:["Drop","n, v","trend","","ينزل / انخفاض أو هبوط"],
+godown:["Go down","phr v","trend","","ينخفض"],
+goupdram:["Go up dramatically","","trend","","يرتفع بشكل كبير"],
+gradually:["Gradually","adv","trend","","تدريجيًا"],
+increase:["Increase","n, v","trend","","يزداد / زيادة",1],
+growth:["Growth","n","trend","","نموّ"],
+upwards:["Upwards","adv","trend","","صعودًا / باتجاه الأعلى"],
+illustrate:["Illustrate","v","trend","","يوضّح"],
+overall:["Overall","adj","trend","","عام / شامل (بشكل عام)"],
+remainsteady:["Remain steady","","trend","","يبقى ثابتًا",1],
+sharply:["Sharply","adv","trend","","بشكل حادّ / بسرعة",1],
+slightlyT:["Slightly","adv","trend","","قليلًا / بشكل طفيف"],
+steadily:["Steadily","adv","trend","","بشكل مطّرد / بثبات"],
+
+/* ==== الوحدة 8 — الأجهزة الذكية ==== */
+alert:["Alert","v","smart","","ينبّه"],
+malfunction:["Malfunction","n","smart","","عطل أو خلل"],
+smartdevice:["Smart device","n","smart","","جهاز ذكي"],
+track:["Track","v","smart","","يتتبّع"],
+hack:["Hack into something","","smart","","يخترق شيئًا إلكترونيًا"],
+facial:["Facial recognition software","","smart","","برنامج التعرّف على الوجه"],
+householdapp:["Household appliance","","smart","","جهاز منزلي"],
+sensor:["Sensor","n","smart","","مستشعر"],
+wearable:["Wearable","n","smart","","جهاز قابل للارتداء"],
+
+/* ==== الوحدة 8 — مترادفات: ليس حديثًا ==== */
+oldfashioned:["Old-fashioned","","old","Still used, but belongs to an earlier era (nostalgic / traditional)","قديم الطراز (تقليدي)"],
+dated:["Dated","","old","Clearly from the past, but still somewhat functional","قديم لكنه ما زال يؤدي وظيفته إلى حدّ ما"],
+outdated:["Outdated","","old","No longer useful due to newer versions","لم يعد مفيدًا (غير محدَّث)"],
+obsolete:["Obsolete","","old","Completely replaced and no longer in use","عفا عليه الزمن (استُبدل بالكامل)",1],
+
+/* ==== الوحدة 8 — الأدوات التقنية ==== */
+gadget:["Gadget","n","techgt","Compact size, portable, trendy (e.g. fitness trackers, smartwatches, Bluetooth speakers, USB drives)","جهاز صغير أو أداة مبتكرة"],
+device:["Device","n","techgt","Larger, more complex equipment with specific functions (e.g. smartphones, tablets, computers)","جهاز"],
+appliance:["Appliance","n","techgt","Something electrical used in the house (e.g. washing machines, refrigerators, ovens)","جهاز منزلي كهربائي"],
+
+/* ==== الوحدة 8 — مصطلحات تقنية إضافية ==== */
+backup:["Back up","phr v","tech","","نسخ احتياطي"],
+compat:["Compatibility","n","tech","","التوافق"],
+functionality:["Functionality","n","tech","","الوظائف أو القدرات العملية"],
+glitch:["Glitch","n","tech","","خلل تقني صغير"],
+stateofart:["State-of-the-art","adj","tech","","تقنية حديثة جدًا أو متقدّمة"],
+bug:["Bug","n","tech","","خطأ أو خلل تقني"],
+latest:["Latest","adj","tech","","الأحدث"],
+handle:["Handle","v","tech","Deal with","يتعامل مع"],
+upgrade:["Upgrade","n, v","tech","","تحسين أو ترقية"],
+
+/* ==== الوحدة 8 — وسائل التواصل ==== */
+attribute:["Attribute","n","socmed","","صفة / خاصية"],
+curate:["Curate","v","socmed","","ينتقي وينسّق (المحتوى)",1],
+deceptive:["Deceptive","adj","socmed","","مخادع / مضلّل"],
+enhance:["Enhance","v","socmed","","يعزّز / ينمّي"],
+flattering:["Flattering","adj","socmed","","يُظهر بشكل جميل (يُبرز المحاسن)",1],
+flaw:["Flaw","n","socmed","","نقص / عيب"],
+superficial:["Superficial","adj","socmed","","سطحي / ظاهري"],
+features:["Features","","socmed","","ملامح"],
+
+/* ==== الوحدة 8 — الصفات ==== */
+appealing:["Appealing","adj","adj","Attractive or interesting","ممتع / جذّاب"],
+endless:["Endless","adj","adj","In large quantities or for a long time","لا نهائي"],
+envious:["Envious","adj","adj","Wanting something that someone else has","حسود / غيور"],
+influential:["Influential","adj","adj","Able to change what people do or think","مؤثّر"],
+upbeat:["Upbeat","adj","adj","Positive and cheerful","متفائل / مبتهج"],
+
+/* ==== الوحدة 8 — أفعال مركبة ==== */
+embed:["Embed","v","socphr","","يزرع (يُدمج)"],
+fitin:["Fit in","phr v","socphr","","ينسجم مع"],
+eatawayat:["Eat away at","phr v","socphr","","ينخر / يرهق بشدة"],
+gothrough:["Go through","phr v","socphr","Experience","يمرّ بـ (تجربة)"],
+comeupagainst:["Come up against","phr v","socphr","Encounter","يواجه"],
+calmdown:["Calm down","phr v","socphr","","يهدأ / استرخِ"],
+breakoff:["Break off (from)","phr v","socphr","","ينفصل (عن)"],
+holddown:["Hold down","phr v","socphr","","يحتفظ بـ (وظيفة مثلًا)",1],
+bumpinto:["Bump into","phr v","socphr","","يقابل صدفة"],
+endup:["End up","phr v","socphr","","ينتهي به الأمر"],
+
+/* ==== الوحدة 8 — الروابط ==== */
+whileL:["While","","link","Conjunctions of contrast","بينما / في حين"],
+whereasL:["Whereas","","link","Conjunctions of contrast","بينما / في حين"],
+although:["Although","","link","Conjunctions of concession","على الرغم من (أنّ)"],
+eventhough:["Even though","","link","Conjunctions of concession","على الرغم من (أنّ) — أقوى"],
+despite:["Despite","","link","Prepositions of contrast — يتبعها اسم / مصدر","على الرغم من"],
+inspiteof:["In spite of","","link","Prepositions of contrast — يتبعها اسم / مصدر","على الرغم من"],
+however:["However","","link","Adverbs of contrast","مع ذلك"],
+nevertheless:["Nevertheless","","link","Adverbs of contrast","مع ذلك (ومع هذا)"],
+nonetheless:["Nonetheless","","link","Adverbs of contrast","مع ذلك (ومع هذا)"],
+
+/* ==== الوحدة 9 — النجاح والفشل ==== */
+flourish:["Flourish","v","succ","Success","تزدهر / ينجح"],
+masterstroke:["Masterstroke","n","succ","Success","ضربة معلّم"],
+payoff:["Pay off","phr v","succ","Success — succeeds in the end","يُثمر / يؤتي ثماره",1],
+blunder:["Blunder","n","succ","Failure","خطأ فادح"],
+flop:["Flop","n","succ","Failure","فشل ذريع",1],
+getnowhere:["Get nowhere","phr","succ","Failure","لا يصل إلى أي مكان"],
+messup:["Mess up","phr v","succ","Failure","يُفسد الأمر / يخرّب",1],
+setback:["Setback","n","succ","Failure","نكسة"],
+acknowledge:["Acknowledge","v","succ","","يُقرّ / يعترف"],
+admitting:["Admitting","n","succ","","الاعتراف"],
+makesuccess:["Make (an effort / a mistake)","v","succ","Make","يفعل / يعمل"],
+offer:["Offer (an apology / help)","v","succ","Offer","يقدّم / يعرض"],
+takeaction:["Take (action / responsibility)","v","succ","Take","يقوم بـ"],
+
+/* ==== الوحدة 9 — الثراء ==== */
+affluent:["Affluent","adj","wealth","","غني"],
+costly:["Costly","adj","wealth","","مكلف"],
+extravagant:["Extravagant","adj","wealth","","مسرف"],
+lucrative:["Lucrative","adj","wealth","","مربح"],
+splashout:["Splash out","phr v","wealth","","ينفق ببذخ"],
+welloff:["Well-off","adj","wealth","","غني (ميسور الحال)"],
+
+/* ==== الوحدة 9 — الكلمات ذات الحدين ==== */
+giveandtake:["Give and take","","bino","","العطاء والأخذ (تبادل التنازلات)"],
+givenchance:["Given the chance","","bino","","لو أُتيحت له الفرصة",1],
+grabchance:["Grab the chance","","bino","","يغتنم الفرصة"],
+highslows:["Highs and lows / ups and downs","","bino","Good and bad times","تقلّبات الحياة"],
+moreorless:["More or less","","bino","About / almost","تقريبًا (أكثر أو أقل)"],
+peacequiet:["Peace and quiet","","bino","","السلام والسكينة"],
+pickchoose:["Pick and choose","","bino","Select","ينتقي بحرّية",1],
+safesound:["Safe and sound","","bino","With no problems","سليم ومعافى"],
+slowlysurely:["Slowly but surely","","bino","","ببطء ولكن بثبات"],
+soonerlater:["Sooner or later","","bino","At some point","عاجلًا أم آجلًا"],
+takeleave:["Take it or leave it","","bino","Accept it or don't","خذه أو اتركه"],
+takechance:["Take the chance / opportunity","","bino","","يغتنم الفرصة"],
+thereandthen:["There and then","","bino","Immediately","فورًا (في الحال)"],
+touchgo:["Touch-and-go","adj","bino","Uncertain","حرج / غير مؤكّد النتيجة",1],
+worthrisk:["Worth the risk","","bino","","تستحق المخاطرة"],
+
+/* ==== الوحدة 9 — English–English–Arabic ==== */
+luckybreak:["A lucky break","","eea","","ضربة حظ (فرصة موفّقة)",1],
+slimchance:["A slim / little chance","","eea","","فرصة ضئيلة"],
+purechance:["Pure chance","","eea","","مجرّد صدفة",1],
+runrisk:["Run the risk","","eea","","يخاطر / يجازف",1],
+lastchance:["Last chance / opportunity","","eea","","الفرصة الأخيرة"],
+whatluck:["What luck!","","eea","","يا له من حظ!"],
+
+/* ==== الوحدة 9 — متلازمات ==== */
+forgranted:["Took it for granted","","cols","Believed something without even thinking about it","يعتبر الأمر مسلَّمًا به"],
+understood:["Make himself understood","","cols","Communicate effectively","يجعل نفسه مفهومًا"],
+nochoice:["Had no choice but to","","cols","Was forced to do something","لم يكن أمامه خيار سوى"],
+lightly:["Got off (relatively) lightly","","cols","Experienced less harm than might be expected","نجا بأقل الأضرار",1],
+trick:["Done the trick","","cols","Had the necessary result he wanted","يفي بالغرض"],
+toll:["Took its toll (on)","","cols","Caused harm or suffering","تسبّب في ضرر"],
+clue:["(Not) have a clue","","cols","Be unable to guess something","ليس لديّ أدنى فكرة"],
+mindoff:["Take his mind off","","cols","Stop him from worrying about something","يصرف ذهنه عن",1],
+ordeal:["Gone through the ordeal","","cols","Had a very difficult or painful experience","مرّ بتجربة صعبة أو مؤلمة"],
+options:["Considered his options","","cols","Thought carefully about what to do","فكّر مليًّا في خياراته"],
+keptgoing:["Kept him going","","cols","Helped him to continue, despite the difficult situation","ساعده على الاستمرار"],
+seabed:["Sea bed","","cols","The land at the bottom of the sea","قاع البحر"],
+
+/* ==== الوحدة 9 — الروابط ==== */
+aswellas:["As well as","","connect","As well as + gerund, clause.","بالإضافة إلى"],
+notonly:["Not only","","connect","Not only + auxiliary + subject, but also + clause.","ليس فقط … بل أيضًا"],
+furthermore:["Furthermore","","connect","Clause. Furthermore, clause.","علاوة على ذلك"],
+inaddition:["In addition to","","connect","In addition to + noun / gerund, clause.","بالإضافة إلى"],
+besides:["Besides","","connect","Besides + gerund / noun, clause.","فضلًا عن / إضافةً إلى"],
+
+/* ==== Word Building — السوابق الإيجابية ==== */
+antibullying:["anti-","","prefix","against — e.g. anti-bullying, anti-hacking","مكافحة (ضدّ)"],
+co:["co-","","prefix","with, together — e.g. co-working, co-pilot","المشتركة (معًا)"],
+extra:["extra-","","prefix","more than normal — e.g. extra-special, extra-large","إضافي (أكثر من المعتاد)"],
+inter:["inter-","","prefix","between — e.g. international, Internet","بين"],
+multi:["multi-","","prefix","many — e.g. multi-sensory, multi-talented","متعدد"],
+overP:["over-","","prefix","more than expected — e.g. overweight, overload","أكثر من المتوقع"],
+re:["re-","","prefix","again — e.g. re-establish, re-read","إعادة"],
+selfconf:["self-","","prefix","me — e.g. self-confident, self-aware","الذات (أنا)"],
+
+/* ==== Word Building — السوابق السلبية ==== */
+dis:["dis-","","prefix","Negative — e.g. disabled, disagree","معاق، لا أوافق"],
+il:["il- / ir-","","prefix","Negative — e.g. illegal, irregular","غير قانوني، غير منتظم"],
+im:["im- / in-","","prefix","Negative — e.g. immature, insecurity","غير ناضج، انعدام الأمن"],
+mis:["mis-","","prefix","Negative — e.g. misjudged, misbehave","إساءة تقدير، إساءة التصرّف"],
+un:["non- / un-","","prefix","Negative — e.g. nonsense, unacceptable","غير / لا — كلام فارغ، غير مقبول"],
+
+/* ==== Word Building — لواحق الأسماء ==== */
+age:["-age","","suffix","e.g. marriage, package","الزواج، الحزمة"],
+alN:["-al (noun)","","suffix","e.g. proposal","اقتراح"],
+antent:["-ant / -ent","","suffix","e.g. assistant, president","مساعد، رئيس"],
+ation:["-ation / -ion / -ition","","suffix","e.g. communication, expression, definition","التواصل، التعبير، التعريف"],
+cianian:["-cian / -ian","","suffix","e.g. musician, librarian","موسيقي، أمين مكتبة"],
+dom:["-dom","","suffix","e.g. freedom","حرية"],
+enceance:["-ence / -ance","","suffix","e.g. appearance, defence","المظهر، الدفاع"],
+erorist:["-er / -or / -ist","","suffix","e.g. sailor, voyager, artist","بحّار، مسافر، فنان"],
+hood:["-hood","","suffix","e.g. childhood","الطفولة"],
+ice:["-ice","","suffix","e.g. practice, notice","الممارسة، ملاحظة"],
+ingN:["-ing (noun)","","suffix","e.g. meaning, revising","المعنى، المراجعة"],
+ism:["-ism","","suffix","e.g. optimism, mechanism","التفاؤل، الآلية"],
+ment:["-ment","","suffix","e.g. government, improvement","الحكومة، التحسّن"],
+ness:["-ness","","suffix","e.g. weakness, goodness","الضعف، الخير"],
+ship:["-ship","","suffix","e.g. relationship, friendship","العلاقة، الصداقة"],
+sis:["-sis","","suffix","e.g. analysis, emphasis","التحليل، التأكيد"],
+tionsion:["-tion / -sion / -cion","","suffix","e.g. obstruction, suspension, suspicion","العرقلة، التعليق، الشكّ"],
+tyity:["-ty / -ity","","suffix","e.g. activity, reality","النشاط، الواقع"],
+ure:["-ure","","suffix","e.g. pressure, culture","الضغط، الثقافة"],
+
+/* ==== Word Building — لواحق الصفات ==== */
+able:["-able / -ible","","suffix","Adjective — e.g. habitable, horrible","صالحة للسكن، فظيعة"],
+alA:["-al (adjective)","","suffix","Adjective — e.g. informal, social","غير رسمي، اجتماعي"],
+edA:["-ed (adjective)","","suffix","Adjective — e.g. exhausted, relaxed","مرهق، مسترخي"],
+ic:["-ic","","suffix","Adjective — e.g. artistic, ecstatic","فنّي، فرحة كبيرة"],
+ingA:["-ing (adjective)","","suffix","Adjective — e.g. interesting, matching","مثيرة للاهتمام، مطابق"],
+ive:["-ive","","suffix","Adjective — e.g. active, productive","نشط، منتج"],
+fulless:["-ful / -less","","suffix","Adjective — e.g. useful, useless","مفيد، عديم الفائدة"],
+ous:["-ous","","suffix","Adjective — e.g. generous, nervous","كريم، عصبي"],
+oryy:["-ory / -y","","suffix","Adjective — e.g. contradictory, chatty","متناقض، ثرثار"],
+lyA:["-ly (adjective)","","suffix","Adjective — e.g. curly, likely","مجعّد، على الأرجح"],
+
+/* ==== Word Building — لواحق الظروف والأفعال ==== */
+ly:["-ly (adverb)","","suffix","Adverb — e.g. effectively, probably","بشكل فعّال، ربما"],
+ate:["-ate (verb)","","suffix","Verb — e.g. complicate, congratulate","يعقّد، يهنئ"],
+en:["-en (verb)","","suffix","Verb — e.g. shorten","يلخّص / يقصّر"],
+ify:["-ify (verb)","","suffix","Verb — e.g. clarify, identify","يوضّح، يحدّد"],
+iseize:["-ise / -ize (verb)","","suffix","Verb — e.g. victimise, realise","يؤذي، يدرك"],
+ute:["-ute (verb)","","suffix","Verb — e.g. commute","يخفّف / يتنقّل"]
+};
+
+/* ============================================================
+   القصص الثلاث — الفقرات والترجمات
+   ============================================================ */
+const STORIES=[
+{
+title:"The Silent Forest",
+ar:"الغابة الصامتة",
+units:"الوحدات 1 + 2 + 4",
+p:[
+"Lina was a journalist. Her editor {sendmsg|sent a message} early: cover a village losing its animals. Lina had to {spreadmsg|spread the message} to her readers, {carrymsg|carry the message} to the town, {conveymsg|convey the message} clearly, and {passonmsg|pass on the message} to her team. Every morning she began with a warm {greeting|greeting}. She had to {stayintouch|stay in touch}, {keeptouch|keep in touch}, and never {losetouch|lose touch} with her sources. Long ago she used to {establishcontact|establish contact} by letter, {maintaincontact|maintain contact} by phone, and try not to {losecontact|lose contact}. Now she'd use email to {makecontact|make contact}.",
+"The story needed to {shedlight|shed light on} an environmental crisis. It was {publicint|in the public interest}, and she wanted to {comeup|come up with} a fresh angle. She felt {thrilled|thrilled} but {nervous|nervous} at once.",
+"On the road, her phone could barely {pickup|pick up} a signal. In the fog she could only just {makeout|make out} the road. After hours of driving she {figureout|figured out} which turn to take.",
+"On the way she met every kind of weather: {blistering|blistering heat} on the plains, {galeforce|gale-force winds} at the coast, {heavyrain|heavy rain} in the mountains, {highhumidity|high humidity} near the river, {soaring|soaring temperatures} in the desert, {subzero|sub-zero temperatures} last winter in the north, {torrential|torrential rain} in autumn, and {scorching|scorching heat} at noon. Local farmers called it {freak|freak weather}, and a long {drought|drought} had left the land dry.",
+"At the village, some people were {frightened|frightened}, others {surprised|surprised}. An old woman was {sad|sad} and {tense|tense}. A young mother was {terrified|terrified} that her children would starve. The kids looked {bewildered|bewildered}, {confused|confused}, and {astonished|astonished} to see a stranger. When she explained the news, some were {devastated|devastated}, and one grandfather was {exasperated|exasperated} by the mayor. Later, when help finally arrived, a young girl was {ecstatic|ecstatic}.",
+"Lina wanted to {favourable|make a favourable impression}, so she tried to {breakice|break the ice}. She {strikeup|struck up a conversation} with an old farmer and {smalltalk|made small talk}. She {compliment|paid him a compliment} about his olive trees, and they {havelaugh|had a laugh}. They {hititoff|hit it off} quickly, and he {taketoyou|took to her}. She hoped to {createbond|create a bond} without {comeacrossas|coming across as} pushy. Later she {comeacross|came across} a young shepherd too.",
+"The farmer had lost his sheepdog, which used to {groom|groom} the flock. His neighbour kept a pig, an {omnivore|omnivore}. And his old {rival|rival} across the valley had gone silent too.",
+"The farmer {pointout|pointed out} the dead trees. \"It's mostly {acidrain|acid rain}. It {resultfrom|results from} {exhaust|exhaust fumes} and {fossil|fossil fuels}. {duel|Due to} {globalwarming|global warming} the {greenhouse|greenhouse effect} {giverise|gives rise to} more heat. {erosion|Soil erosion} {leadto|leads to} {waterscarcity|water scarcity}. {asaresult|As a result of} {habitatloss|habitat loss}, many {endangered|endangered species} are gone. And {consequence|as a consequence of} pollution, our forest {resultin|results in} dead earth. {toxic|Toxic waste} from the factory is {hazardous|hazardous}. Even the {ozone|ozone layer} is thin, and {vehicleemis|vehicle emissions} choke us.\"",
+"The farmer added, \"I read every report you {referto|refer to}. Your articles are {directedto|directed to} the ministry. We need to {learnabout|learn about} the crisis. Nobody has {controlover|control over} the factory. We need {renewable|renewable energy} and {windturbine|wind turbines}.\" Lina {takein|took in} every word.",
+"The {primate|primates} here were {critically|critically endangered}, {nocturnal|nocturnal} and {solitary|solitary}. They {rely|rely on} the forest. A {predator|natural predator} was less dangerous than a {poacher|poacher} or a {pesticide|pesticide}. The factory could {wipeout|wipe out} the whole forest and {bringabout|bring about} disaster. She wanted to {getacross|get this message across}, so she {spellout|spelled out} every fact.",
+"The old man told her about the wildlife: a {mammal|mammal} with a strong {backbone|backbone} and full {skeleton|skeleton}; a slow {reptile|reptile} with hard {scale|scales}; small {invertebrate|invertebrates} in the pond, mostly {crustacean|crustaceans}; a {marine|marine} bird visiting each spring. Some species were already {extinct|extinct}. The kids loved the {cuddly|cuddly}, {furry|furry} rabbits, but hated the {slimy|slimy} frogs. A big fish with a broken {fin|fin} lay by the shore. The forest, he said, {makeup|makes up} half the county.",
+"The next day, a local official became angry. He {jumpdown|jumped down her throat}, {onspot|put her on the spot}, {firequestions|fired questions at her}, and {refusedrop|refused to let it drop}. He {lastword|insisted on having the last word}. Lina couldn't {wordedgeways|get a word in edgeways}. She was {annoyed|annoyed}, then {furious|furious}, and her editor was {livid|livid}.",
+"To calm herself, she thought, \"{worstcould|What is the worst that could happen?}\" But she also said, \"{worriedsick|I'm worried sick about} this village. {keepupnight|It has been keeping me up at night}. {upthewall|The official is driving me up the wall}. {getsnerves|He really gets on my nerves}. {upto|I have had it up to here with} his lies.\"",
+"A colleague heard the story and gasped: \"{kidding|You have got to be kidding me!}\" — \"{outofhere|Get out of here!}\" Another said, \"{whowould|Who would have thought it?}\" The villagers were {dumps|feeling a bit down in the dumps}, {bluephr|feeling a bit blue}, and the mothers were {heartbroken|heartbroken}.",
+"Lina stayed professional. She had to {verify|verify her sources} and {bothsides|present both sides of the story}. She checked every {signsS|sign} (hint or clue), and had to {uncoverS|uncover} (expose) hidden facts. She would {stateS|state} her findings, never write a {fakeS|fake} (fraud) story, and always cite a {reliableS|reliable} (trustworthy) source. The whole affair was a {mysteryS|mystery} (enigma) at first, but wildlife had begun to {decreaseS|decrease} (go down). It was a {strangeS|strange} (bizarre) situation.",
+"The mayor's office {release|released a statement} to {refute|refute the allegation}. Lina wrote a {hardhitting|hard-hitting} article to {exposecorr|expose corruption} and {raiseaw|raise awareness}, without {clickbait|clickbait headlines} — readers already have a short {attentionspan|attention span}. Her paper needed to {generaterev|generate revenue}, but not at the cost of truth. Her editor said: \"It's {newsworthy|newsworthy} and {exclusive|exclusive}, not just {sensational|sensational}. It's not {quirky|quirky} but {heartbreaking|heartbreaking}. Keep it {balanced|balanced} and {topical|topical}. Some remarks stay {offrecord|off the record}. The ending is {heartwarming|heartwarming}.\" Soon it {hitheadlines|hit the headlines} and {goviral|went viral}.",
+"The mayor's office made an {accusation|accusation} and tried to {obstruct|obstruct} her work. Lina stood on the {pavement|pavement} outside city hall. The court ordered a {replacement|replacement} for the mayor after a formal {request|request}. Journalists filed a {suspension|suspension} paperwork amid great {tension|tension}. A friendly {activist|activist} helped Lina {putin|put in} her long report. She would {reportpolice|report the whole thing to the police}, {seize|seize the opportunity}, and expose the man who tried to {pose|pose} as innocent. Corruption was the true {subjectmatter|subject matter} of the story.",
+"Her photographer Omar was {wandering|wandering} near the river when he {spotted|spotted} a small primate. He {peered|peered} through his lens, {glanced|glanced} at the sky, and {capture|captured the image}. His {landscape|landscape photo} was {poignant|poignant} and {evoke|evoked} strong feelings. He {compose|composed} it carefully, refusing a {cropped|cropped} version. A woman {shriek|shrieked} when she saw it. Some children {raced|raced} to see it and {yelled|yelled} with joy. An old man {shuffle|shuffled} past, {muttering|muttering} a prayer. A guard {tiptoe|tiptoed} away, and the official {bellowed|bellowed} at his men.",
+"{obviously|Obviously} the animals were gone. {theoretically|Theoretically} they could return, but {presumably|presumably} many had died. {disappointingly|Disappointingly}, the mayor was silent. {foolishly|Foolishly}, one guard tried to flee. {surely|Surely} justice would come. {clearly|Clearly}, the village needed help. {personally|Personally}, Lina wanted to stay. She was {oblige|obliged} to stay for two weeks. She would {succeed|succeed}, and the court would {permit|permit} her to publish. Sales dropped {slightly|slightly} at first, then {considerably|considerably} — {nowherenear|nowhere near} the peak — but she pushed on. {fortunately|Fortunately}, the government soon announced the factory's shutdown. {apparently|Apparently} the {allegation|allegations} were true. {unbelievably|Unbelievably}, the activists were invited to the ministry.",
+"\"{whowould|Who would have thought it?}\" said Lina. \"{sigh|I can breathe a sigh of relief} now. {weight|That is a weight off my mind}. {thankg|Thank goodness}!\" She felt {walkingair|walking on air}, and she couldn't {cantstop|stop smiling}.",
+"Her editor called: \"I'm {torn|torn between} two headlines. I'm {onfence|on the fence about} the second.\" \"I'm having {secondthoughts|second thoughts},\" said Lina. \"I {cantmakeup|can't make up my mind}. I {cantfinger|can't put my finger on it, but} something is off.\" Another editor said, \"{doesntgrab|It doesn't grab me}. I think we're on the {wrongtrack|wrong track}. OK, but {anotheropt|another option might be} something simpler.\" \"{seriously|Seriously?!}\" Then someone said, \"{spoton|You're spot on!} — {absolute|That's what I was going to say! Absolutely!}\" And \"{goodpoint|That's a good point, but} we must be careful.\" \"{ontheone|On the one hand}, 'The Silent Forest' is strong, but on the other hand, it's very sad. {letsmake|So let's make a decision on this}. {shall|Shall we go with} 'The Silent Forest'?\" \"{lookslike|It looks as if we agree that} it's perfect.\"",
+"At a conference Lina said: \"{gonnatalk|I'm going to be talking about} the forest today. {inother|In other words}, it's a global problem. {second|The second thing is} that ordinary people can act, {whereas|whereas} governments wait. {sumup|So, to sum up}: save the forest, save the future.\""
+],
+t:[
+"كانت لينا صحفية. أرسل لها رئيس التحرير رسالة مبكرة: غطّي قصة قرية تفقد حيواناتها. كان عليها أن تنشر الرسالة إلى قرّائها، وأن تحملها إلى المدينة، وأن تنقل الرسالة بوضوح، وأن تمرّرها إلى فريقها. تبدأ كل يوم بتحية دافئة. كان عليها أن تبقى على تواصل وأن تحافظ على التواصل ولا تفقده أبدًا مع مصادرها. قبل زمن كانت تبدأ اتصالًا بالرسائل، وتحافظ عليه بالهاتف، وتحاول ألا تفقد الاتصال. أما الآن فتستعمل البريد الإلكتروني لإجراء الاتصال.",
+"القصة تحتاج إلى تسليط الضوء على أزمة بيئية. الأمر في المصلحة العامة، وأرادت أن تبتكر زاوية جديدة. شعرت بالحماسة والتوتر في آنٍ معًا.",
+"في الطريق، بالكاد كان هاتفها يلتقط الإشارة. وفي الضباب كانت بالكاد تميّز الطريق. بعد ساعات من القيادة، اكتشفت أخيرًا أي منعطف تسلك.",
+"قابلت في الطريق كل أنواع الطقس: حرارة شديدة في السهول، ورياحًا عاتية عند الساحل، ومطرًا غزيرًا في الجبال، ورطوبة عالية قرب النهر، وارتفاعًا في درجات الحرارة في الصحراء، ودرجات حرارة دون الصفر في الشمال شتاءً، وأمطارًا غزيرة في الخريف، وحرًّا حارقًا ظهرًا. سمّاه المزارعون طقسًا غير اعتيادي، وقد ترك جفاف طويل الأرض جافة.",
+"في القرية، كان بعضهم خائفًا، وآخرون مندهشين. امرأة عجوز كانت حزينة ومتوترة. أمّ شابة مرتعبة من أن يموت أطفالها جوعًا. الأطفال بدوا محتارين مرتبكين منذهلين لرؤية غريبة. حين شرحت الخبر، شعر بعضهم بالتحطّم، وثار جدّ ساخطًا على العمدة. لاحقًا، حين وصل العون أخيرًا، فرحت طفلة صغيرة فرحًا كبيرًا.",
+"أرادت لينا أن تترك انطباعًا جيدًا فحاولت أن تكسر الجمود. بدأت محادثة مع مزارع مسنّ وتحدّثت معه حديثًا خفيفًا. جاملته على أشجار الزيتون فضحكا معًا. انسجما بسرعة، وبدأ يتقبّلها. أرادت أن تبني رابطًا دون أن تبدو ملحّة. وقابلت لاحقًا راعيًا شابًا بالصدفة.",
+"كان المزارع قد فقد كلب راعيه الذي كان يُنظّف الفروة للأغنام. جاره يربّي خنزيرًا آكل لحوم ونباتات. ومنافسه القديم في الوادي المقابل صمت هو الآخر.",
+"أشار المزارع إلى الأشجار الميتة. \"غالبًا الأمطار الحمضية. تنتج عن الأدخنة العادمة والوقود الأحفوري. بسبب الاحترار العالمي، ظاهرة الاحتباس الحراري تؤدي إلى حرارة أعلى. تعرية التربة تؤدي إلى شحّ المياه. نتيجة لفقدان الموائل الطبيعية، اختفت أنواع مهددة كثيرة. ونتيجة للتلوث، تنتهي غابتنا أرضًا ميتة. النفايات السامة من المصنع خطيرة. وحتى طبقة الأوزون فوقنا رقيقة، وانبعاثات المركبات تخنقنا.\"",
+"أضاف المزارع: \"أقرأ كل تقرير تعودين إليه. مقالاتك موجَّهة إلى الوزارة. علينا أن نتعلّم عن الأزمة. لا أحد يتحكّم في المصنع. نحتاج إلى طاقة متجددة وتوربينات رياح.\" استوعبت لينا كل كلمة.",
+"الرئيسيات هنا مهددة بالانقراض بشكل حرج، وليلية، وتعيش بمفردها. تعتمد على الغابة. المفترس الطبيعي أقل خطرًا من الصياد الجائر أو المبيد الحشري. يمكن للمصنع أن يدمّر الغابة كلها ويُحدث كارثة. أرادت أن توصل هذه الرسالة، فوضّحت كل حقيقة بالتفصيل.",
+"حدّثها الرجل العجوز عن الحياة البرية: ثديي بعمود فقري قوي وهيكل عظمي كامل؛ زاحف بطيء بحراشف قاسية؛ لافقاريات صغيرة في البركة، أكثرها قشريات؛ وطائر بحري يزور المكان كل ربيع. بعض الأنواع منقرضة أصلًا. الأطفال يحبون الأرانب اللطيفة المفروة، ويكرهون الضفادع اللزجة. وسمكة كبيرة بزعنفة مكسورة رأت عند الشاطئ. الغابة، كما قال، تشكّل نصف المقاطعة.",
+"في اليوم التالي، غضب مسؤول محلي. ردّ عليها بغضب، وأحرجها بأسئلة صعبة، ومطرها بالأسئلة، ورفض أن يترك الأمر. أصرّ أن تكون له الكلمة الأخيرة. لم تستطع لينا أن تقول كلمة. شعرت بالانزعاج، ثم الغضب الشديد، وكان رئيس تحريرها مغتاظًا.",
+"لتهدّئ نفسها، فكّرت: \"ما أسوأ ما قد يحدث؟\" لكنها قالت أيضًا: \"أنا قلقة جدًا على هذه القرية. لم أنم من القلق. هذا المسؤول يدفعني إلى الجنون. يستفزّ أعصابي. لقد سئمت من أكاذيبه تمامًا.\"",
+"سمع زميل لها القصة وشهق: \"لا أصدّقك!\" — \"اخرج من هنا!\" وقال آخر: \"مَن كان يظن ذلك؟\" كان أهل القرية يشعرون بالإحباط، بالحزن، وكانت الأمهات محطّمات القلوب.",
+"بقيت لينا محترفة. كان عليها أن تتحقق من مصادرها وتعرض جانبي القصة. تفقّدت كل إشارة (تلميح أو دليل)، وكان عليها أن تكشف حقائق مخفية. ستصرّح بنتائجها، ولن تكتب قصة زائفة، وستستشهد دائمًا بمصدر موثوق. كانت القصة كلها لغزًا في البداية، لكن الحياة البرية بدأت تنقص. كان وضعًا غريبًا.",
+"أصدرت العمدة بيانًا لدحض الادعاء. كتبت لينا مقالًا حادّ الانتقاد لفضح الفساد ورفع الوعي، بلا عناوين خادعة — فقرّاء اليوم لديهم مدى انتباه قصير. صحيفتها بحاجة إلى تحقيق الإيرادات، لكن ليس على حساب الحقيقة. قال رئيس التحرير: \"إنه جدير بالنشر وحصري، ليس فقط مثيرًا. ليس غريبًا بل مفجعًا. اجعليه متوازنًا وعلى الساعة. بعض التصريحات تبقى غير رسمية. الخاتمة تُثلج الصدر.\" وسرعان ما تصدّر العناوين وانتشر.",
+"وجّه مكتب العمدة اتهامًا لها، وحاول أن يعرقل عملها. وقفت لينا على الرصيف أمام مبنى البلدية. أمرت المحكمة باستبدال العمدة بعد طلب رسمي. رفع الصحفيون وثائق تعليقه وسط توتر كبير. ساعد ناشط ودود لينا في تقديم تقريرها الطويل. ستُبلغ الشرطة، وتغتنم الفرصة، وتكشف الرجل الذي تظاهر بالبراءة. كان الفساد هو الموضوع الحقيقي للقصة.",
+"كان مصوّرها عمر يتجوّل قرب النهر حين لاحظ رئيسًا صغيرًا. حدّق من خلال عدسته، لمح السماء، والتقط الصورة. صورته الأفقية كانت مؤثّرة واستحضرت مشاعر قوية. ركّبها بعناية، ورفض النسخة المقصوصة. صرخت امرأة حين رأتها. ركض أطفال ليروها وهتفوا فرحين. مرّ رجل عجوز متثاقلًا، وهو يتمتم بدعاء. ابتعد حارس على أطراف أصابعه، وزأر المسؤول في وجه رجاله.",
+"من الواضح أن الحيوانات ذهبت. نظريًا يمكنها أن تعود، لكن من المفترض أن كثيرًا منها مات. ولمرارة الأمر، بقي العمدة صامتًا. حاول حارس بحماقة أن يهرب. بالتأكيد ستأتي العدالة. من الواضح أن القرية بحاجة إلى مساعدة. شخصيًا، أرادت لينا البقاء. كانت مُلزَمة بالبقاء أسبوعين. ستنجح، وستسمح لها المحكمة بالنشر. انخفضت المبيعات بشكل طفيف في البداية، ثم بشكل كبير — بعيدة كل البعد عن ذروتها — لكنها تابعت. لحسن الحظ، أعلنت الحكومة قريبًا إغلاق المصنع. على ما يبدو أن الادعاءات كانت صحيحة. بشكل لا يُصدَّق، دُعي الناشطون إلى الوزارة.",
+"\"مَن كان يظن ذلك؟\" قالت لينا. \"أستطيع أن أتنفس الصعداء الآن. أخيرًا ارتحت. الحمد لله!\" شعرت بأنها تكاد تطير من الفرح، ولم تستطع التوقف عن الابتسام.",
+"اتصل رئيس التحرير: \"أنا متردد بين عنوانين. لست متأكدًا بعد بشأن الثاني.\" \"بدأت أفكر بالأمر من جديد،\" قالت لينا. \"لا أستطيع أن أحسم قراري. لا أستطيع أن أحدد ما هو بالضبط، لكن شيئًا ما غير مضبوط.\" قال محرر آخر: \"العنوان لا يعجبني. أظن أننا نسلك الطريق الخاطئ. حسنًا، لكن قد يكون هناك خيار أبسط.\" \"بجدية؟!\" ثم قال أحدهم: \"معك حق تمامًا! هذا ما كنت سأقوله! تمامًا!\" و\"هذه نقطة جيدة، لكن علينا أن نتوخى الحذر.\" \"من ناحية، 'الغابة الصامتة' قوي، ومن ناحية أخرى، هو حزين جدًا. إذن دعونا نتّخذ قرارًا. فهل نختار 'الغابة الصامتة'؟\" \"يبدو أننا متفقون على أنه ممتاز.\"",
+"في مؤتمر قالت لينا: \"سأتحدث اليوم عن الغابة. بعبارة أخرى، إنها مشكلة عالمية. النقطة الثانية هي أن الناس العاديين يستطيعون التصرف، بينما تنتظر الحكومات. باختصار: أنقذوا الغابة، أنقذوا المستقبل.\""
+]
+},
+{
+title:"The Old House",
+ar:"البيت العتيق",
+units:"الوحدات 5 + 6 + 7",
+p:[
+"Nour was a {digitalnomad|digital nomad}. She could {workremotely|work remotely} from any {coworking|co-working space}, and was always {onthemove|on the move}. She never wanted to be {tieddown|tied down to one place}, but she missed her {homecomforts|home comforts}. She wanted to {settledown|settle down} and {putroots|put down roots}. So she came back to her grandmother's old house.",
+"The house was {compact|compact} but {cramped|cramped}, in a {denselypop|densely populated} area. A {mediumsized|medium-sized} home, but with {excess|excess} furniture, and the garden {confined|confined} to one corner. The council said it was {allowed|allowed} to change the kitchen, but {forbidden|forbidden} to touch the front wall. The changes had to be {managed|managed} carefully. Owners were {obliged|obliged} to tell the council, a permit was {required|required}, and only small changes were {permitted|permitted}. They {succeeded|succeeded} on the first try.",
+"{comparedwith|Compared with} the old kitchen, the new one was {much|much} better. {incomparison|In comparison with} the old oven, the new one was {alot|a lot} quieter. The old fridge was {far|far} worse, the old sink was {miles|miles} dirtier, the layout was {way|way} more cramped. The window was {abit|a bit} bigger, {slightlyD|slightly} taller, and {marginally|marginally} wider. It was {considerablyD|considerably} more expensive and {significantlyD|significantly} newer. But it was {notnearly|not nearly} as noisy as before, and {nothinglike|nothing like} the flat next door. The paint was old, {whereasbut|whereas} the walls were new.",
+"They had to {carryout|carry out} many repairs. Nour tried to {mend|mend} a {leakingpipe|leaking pipe}, and Sami {replace|replaced} the bulb — a {changebulb|change bulb} task. He also fixed a {flattyre|flat tyre} and examined a {scratched|scratched screen}. They wanted to {getridof|get rid of} a huge {carpetstain|carpet stain}, so Nour used a {dishcloth|dishcloth} to {mopup|mop up} a {puddle|puddle}. Then she used a {dustpan|dustpan} and {brush|brush} to {sweepup|sweep up} some {shattered|shattered glass}.",
+"They found a box of {tangled|tangled leads}, a jumper that had {shrink|shrunk}, and a cloth {soak|soaked} in paint. They used {maskingtape|masking tape} to {label|label} every box, but {runout|ran out of} paint on Friday. Everything {breakdown|broke down} that week. Slowly they began to {doup|do up} the house: {decorate|decorate the room}, {clearup|clear up}, {wipedown|wipe down} walls, {pickupobj|pick up} tools, {fix|fix} what they could, and {remove|remove} the rest.",
+"The house was full of sounds. They heard a {bee|bee buzzing}, {birds|birds chirping}, a {balloon|balloon popping}, and a {humming|machine humming}. Outside: the {roar|roar of an engine}, the {rustling|rustling of paper}, a {thud|thud} in the attic, and a {screech|parrot screeching} next door. Last winter, they had heard the {crunchsnow|crunching of snow} under their boots. The kitchen fan was almost {deafening|deafening}, but the whole project was {fascinating|fascinating}. The old wallpaper was {ridiculous|ridiculous}, but not truly {silly|silly}. It was {loud|loud} and {interesting|interesting} at once. Cooking made her sister {scared|scared} of the fire.",
+"Every surface had a texture. The wall was {coarse|coarse}, curtains {silky|silky}, pillows {fluffy|fluffy}, garden bush {spiky|spiky}. The old sofa was {squishy|squishy}, the table {sticky|sticky} with jam. Then came the smells: the {aroma|aroma} of fresh bread, the {scent|scent} of jasmine — but the {smelly|smelly} basement had a terrible {stench|stench}. One smell was {overpowering|overpowering}, another {subtle|subtle}.",
+"For the charity dinner, Nour cooked. She had to {slice|slice} onions, {peel|peel} potatoes, and heat a {pan|pan}. She {stir|stirred} the sauce and let it {simmer|simmer}, while water began to {boil|boil} and the {sizzle|meat sizzling} filled the kitchen. Sami used a {foodprocessor|food processor} to {whizz|whizz} the soup into a {puree|puree}. They had to {chill|chill} the dessert.",
+"Nour tasted everything. The soup was {mouthwater|mouth-watering} but too {bland|bland}, so she added spices to make it {spicy|spicy}. The sauce was {thick|thick}, not {runny|runny} or {watery|watery}. Salad was {crunchy|crunchy}, hummus {smooth|smooth}, cheese {mild|mild}. She liked {savoury|savoury} food, and the dish was {tasty|tasty}. One dessert was {gross|gross}, but the cake was {impressive|impressive} and even {mindblowing|mind-blowing}. Her sister, {petrified|petrified} of cooking, laughed.",
+"\"{whichprefer|Which would you prefer}, soup or salad?\" asked Sami. \"{whatrather|What would you rather do} — try new food or stick to old?\" \"I {prefergerund|prefer having} soup to eating salad,\" said Nour. \"{donteither|I don't like either of them},\" said their sister. \"{likeboth|I like them both equally},\" said Nour. \"{genfavour|I generally favour} hot over cold. {prefer|I'd prefer} soup. {rather|I'd rather} have soup. {sooner|I'd sooner do} the dishes than cook.\" \"{givenchoice|Given the choice},\" said Sami, \"{goforany|I'd go for pasta any day, every time}. {slight|I have a slight preference for} salad.\" \"{itsup|It's up to you},\" said Nour. \"{yourcall|It's your call}. {easy|I'm easy}. {whatever|Whatever you prefer}.\"",
+"Nour had been {blind|blind} to the problems at first — {vision|vision} improves with age. Some neighbours were literally {blind|blind}. She wanted to {pursue|pursue} a career in charity. Some people tried to {putoff|put her off}, but she was {tough|tough}. She wanted to {realise|realise} her dream and {cometoterms|come to terms with} her fear. She was {capableof|capable of} much more; she had to {adjustto|adjust to} a new life. She was {desperate|desperate to} {spreadword|spread the word about} the dinner.",
+"Nour saw that {brokenpipes|broken pipes} could {contaminate|contaminate fresh water supplies}. Many {envprob|environmental problems} were coming, and {naturaldis|natural disasters} made them worse. The dinner would {installtoilets|install new toilets} and {waterfilters|provide water filters}. She also talked about {poverty|poverty}, {unemployment|unemployment}, {homelessness|homelessness}, {racism|racism}, {genderequality|gender equality}, and {immigration|immigration}. She cared about {health|health} and the {environment|environment}. People need {facilities|facilities} and {opportunities|opportunities}. Every {institution|institution} must {enforce|enforce} the law and give {equal|equal} rights. Nobody can {justify|justify} racism.",
+"Nour wanted to {prove|prove} that ordinary people can help. She had to {test|test} the pipes; {overword|over} fifty households were affected. The tank sat {aboveword|above} the roof. {infact|In fact}, {thefact|the fact that} the pipes were old made the leak worse. She had to {setup|set up} a stall and {setout|set out} the chairs. She wanted to {expand|expand} next year. She looked at things from a {differentangle|different angle}, wrote {brightideas|bright ideas} on a board, and asked everyone to {sharethoughts|share their thoughts}. Her brother wanted to {provesright|prove her right}.",
+"Volunteers had to {participate|participate in} the work. They would {protectagainst|protect the guests against} the cold, and {dealwith|deal with} every problem calmly. Families {livein|live in} tiny apartments and {liveon|live on} little money — they had to {surviveon|survive on} very little. Nour told the children to {takefrom|learn from} experts. Volunteers {callout|called out} greetings, warned about the {dangerto|danger to} children, and gave {helpto|help to} the elderly.",
+"A young {intern|intern} joined the team. She was {industrious|industrious}, but {illequipped|ill-equipped} for the cold. A local {foundation|foundation} sent money; an {anonymous|anonymous} donor sent a big cheque. All the {proceeds|proceeds} went to the cause; nobody took a {commission|commission}. Every volunteer was {integral|integral} to the night. A neighbour tried to {fatshame|fat-shame} the intern, {mock|mock} her, and {humiliate|humiliate} her {maliciously|maliciously}. She {shrugoff|shrugged it off} and said, \"I'll {lastlaugh|have the last laugh}.\""
+],
+t:[
+"كانت نور رحّالة رقمية. تستطيع أن تعمل عن بعد من أي مساحة عمل مشتركة، وكانت دائمة التنقل. لم ترد أن تكون مقيَّدة بمكان واحد، لكنها كانت تفتقد وسائل الراحة المنزلية. أرادت أن تستقر وأن تُنبت جذورها. فعادت إلى بيت جدتها العتيق.",
+"البيت مدمج لكنه ضيّق، في منطقة مكتظّة بالسكان. بيت متوسط الحجم، لكن بأثاث فائض، والحديقة مقيَّدة في زاوية واحدة. قال المجلس البلدي إن تغيير المطبخ مسموح، لكن يمنع لمس الجدار الأمامي. التغييرات يجب أن تُدار بعناية. المالكون ملزمون بإبلاغ المجلس، والتصريح مطلوب، ويسمح فقط بتغييرات صغيرة. نجحوا من المحاولة الأولى.",
+"مقارنةً بالمطبخ القديم، الجديد أفضل بكثير. للمقارنة مع الفرن القديم، الجديد أهدأ بكثير. الثلاجة القديمة أسوأ بكثير، والمغسلة القديمة أوسخ بكثير جدًا، والتصميم القديم أضيق بكثير. النافذة أكبر قليلًا، وأعلى قليلًا، وأعرض بشكل طفيف. أغلى بشكل ملحوظ وأحدث بشكل ملحوظ. لكنه ليس صاخبًا كالسابق أبدًا، ولا يشبه إطلاقًا الشقة المجاورة. الطلاء قديم، بينما الجدران جديدة.",
+"كان عليهم تنفيذ إصلاحات كثيرة. حاولت نور إصلاح أنبوب مسرِّب، واستبدل سامي المصباح — مهمة تغيير مصباح. أصلح أيضًا إطارًا مثقوبًا وفحص شاشة مخدوشة. أرادوا التخلّص من بقعة كبيرة على السجاد، فاستعملت نور قطعة قماش لتنظف بركة ماء. ثم استعملت جاروف الغبار والفرشاة لكنس زجاج محطَّم.",
+"وجدوا صندوقًا من الأسلاك المتشابكة، وسترة انكمشت، وقطعة قماش منقوعة في الطلاء. استعملوا شريطًا لاصقًا لعنونة كل صندوق، لكن نفد الطلاء يوم الجمعة. تعطّل كل شيء ذلك الأسبوع. ببطء بدأوا يجدّدون البيت: يزيّنون الغرفة، ينظّفون، يمسحون الجدران، يلتقطون الأدوات، يصلحون ما يستطيعون، ويزيلون الباقي.",
+"البيت مليء بالأصوات. سمعوا طنين نحل، وزقزقة طيور، وفرقعة بالون، وأزيز آلة. في الخارج: هدير محرك، وحفيف ورق، وصوت مكتوم في العلّية، وصراخ ببغاء في البيت المجاور. الشتاء الماضي، سمعوا سحق الثلج تحت حذائهم. مروحة المطبخ كانت تكاد تصمّ الآذان، لكن المشروع كله كان ساحرًا. الورق القديم كان سخيفًا، لكن ليس أحمق بحق. كان صاخبًا وممتعًا في الوقت نفسه. الطبخ جعل أختها خائفة من النار.",
+"كل سطح له ملمس. الجدار خشن، الستائر حريرية، الوسائد منفوشة، شجيرة الحديقة شائكة. الأريكة القديمة طرية ورخوة، الطاولة لزجة بالمربى. ثم جاءت الروائح: عبق الخبز الطازج، وشذى الياسمين — لكن القبو كريه الرائحة كان له نتانة رهيبة. رائحة واحدة كانت طاغية، وأخرى خفيفة.",
+"من أجل عشاء الخير، طبخت نور. كان عليها تقطيع البصل شرائح، وتقشير البطاطا، وتسخين المقلاة. قلّبت الصلصة وتركتها تُطبخ على نار هادئة، بينما بدأ الماء يغلي وطشطشة اللحم تملأ المطبخ. استعمل سامي محضّرة الطعام ليخلط الحساء إلى هريس. كان عليهم أن يبرّدوا الحلوى.",
+"تذوّقت نور كل شيء. الحساء يسيل له اللعاب لكنه خالٍ من النكهة، فأضافت البهار ليصبح متبّلًا. الصلصة كثيفة، ليست سائلة أو مخفَّفة. السلطة مقرمشة، الحمص ناعم، الجبن لطيف المذاق. تحب الطعام المالح الشهي، والطبق لذيذ. حلوى واحدة كانت مقززة، لكن الكعكة مثيرة للإعجاب بل مذهلة. أختها المرتعبة من الطبخ ضحكت.",
+"\"أيّهما تفضّل، الحساء أم السلطة؟\" سأل سامي. \"أيّهما تفضّل أن تفعل — تجرّب طعامًا جديدًا أم تلتزم بالقديم؟\" \"أفضّل تناول الحساء على السلطة،\" قالت نور. \"لا يعجبني أيّهما،\" قالت أختهم. \"يعجبانني بالتساوي،\" قالت نور. \"أفضّل عمومًا الحار على البارد. أفضّل الحساء. كنت أفضّل الحساء. كنت أفضّل غسل الصحون على الطبخ.\" \"لو أُتيح لي الاختيار،\" قال سامي، \"أختار المعكرونة في أي وقت. لدي ميل طفيف إلى السلطة.\" \"الأمر عائد إليك،\" قالت نور. \"القرار قرارك. لا مانع لديّ. أيًّا كان ما تفضّله.\"",
+"كانت نور غير مدركة للمشاكل في البداية — الرؤية تتحسّن مع العمر. بعض الجيران كانوا مكفوفين حرفيًا. أرادت أن تمارس مهنة في العمل الخيري. حاول بعضهم أن يُثبّطها، لكنها كانت قوية. أرادت أن تحقّق حلمها وأن تتقبّل خوفها. كانت قادرة على أكثر بكثير؛ كان عليها أن تتكيّف مع حياة جديدة. كانت تتوق بشدة إلى نشر الخبر عن العشاء.",
+"رأت نور أن الأنابيب المكسورة قد تلوّث إمدادات المياه العذبة. كانت مشاكل بيئية كثيرة تلوح في الأفق، والكوارث الطبيعية تجعلها أسوأ. سيموّل العشاء تركيب مراحيض جديدة وتوفير فلاتر مياه. تحدّثت أيضًا عن الفقر، والبطالة، والتشرّد، والعنصرية، والمساواة بين الجنسين، والهجرة. كانت تهتم بالصحة والبيئة. الناس بحاجة إلى مرافق وفرص. كل مؤسسة يجب أن تفرض القانون وأن تمنح حقوقًا متساوية. لا أحد يستطيع تبرير العنصرية.",
+"أرادت نور أن تثبت أن الناس العاديين يستطيعون المساعدة. كان عليها أن تفحص الأنابيب؛ أكثر من خمسين أسرة تأثّرت. الخزّان يقع فوق السطح. في الحقيقة، الحقيقة أن الأنابيب قديمة جعلت التسرّب أسوأ. كان عليها أن تركّب طاولة عرض وأن ترتّب الكراسي. أرادت أن توسّع العمل السنة القادمة. نظرت إلى الأمور من زاوية مختلفة، كتبت أفكارًا مشرقة على لوح، وطلبت من الجميع أن يشاركوا بأفكارهم. أخوها أراد أن يُثبت صحة رأيها.",
+"كان على المتطوعين المشاركة في العمل. سيحمون الضيوف من البرد ويتعاملون مع كل مشكلة بهدوء. العائلات تعيش في شقق صغيرة وتعتمد على مال قليل — كان عليهم أن يعيشوا بالقليل. أخبرت نور الأطفال أن يتعلّموا من الخبراء. المتطوعون كانوا ينادون بالتحية، ويحذّرون من الخطر على الأطفال، ويقدّمون العون لكبار السن.",
+"انضمّت متدرّبة شابة إلى الفريق. كانت مجتهدة، لكن غير مجهّزة للبرد. أرسلت مؤسسة محلية مالًا؛ وأرسل متبرّع مجهول شيكًا كبيرًا. كل العائدات ذهبت للقضية؛ لم يأخذ أحد عمولة. كل متطوع كان جوهريًا في تلك الليلة. حاول جار أن يسخر من المتدرّبة بسبب وزنها، ويهزأ بها، ويُذلّها بخبث. تجاهلت ذلك وقالت: \"سأنتصر في النهاية.\""
+]
+},
+{
+title:"Yara's Smart Idea",
+ar:"فكرة يارا الذكية",
+units:"الوحدات 8 + 9 + Word Building",
+p:[
+"Yara loved every new {gadget|gadget}. Her favourite {device|device} was a {wearable|wearable} that could {track|track} her sleep. She wanted to build a {smartdevice|smart device}: a {sensor|sensor} that could {alert|alert} gardeners when plants needed water. Her friend Omar, who was {selfconf|self-confident} and {multi|multi-talented}, became her {co|co-founder}.",
+"At first, their design looked {dated|dated}, their software was {outdated|outdated}, and the first prototype was already {obsolete|obsolete}. It was almost {oldfashioned|old-fashioned}! They needed to {upgrade|upgrade} it and {backup|back up} their files every night. They wanted a {stateofart|state-of-the-art} product with the {latest|latest} {functionality|functionality} and good {compat|compatibility} with any {householdapp|household appliance} or {appliance|appliance} in the kitchen. A single {bug|bug} or {glitch|glitch} could ruin it; it had to {handle|handle} thousands of users. If it had a {malfunction|malfunction} or someone could {hack|hack into} it, customers would leave, so they added {facial|facial recognition software} for the garden gate.",
+"In the first year, sales {increase|increased} {gradually|gradually}, then {goupdram|went up dramatically}. Yara drew a graph to {illustrate|illustrate} the {growth|growth}: the line moved {upwards|upwards} {steadily|steadily}, then {drop|dropped} {sharply|sharply} in winter, and the arrow pointed {downwards|downwards}. Sales {godown|went down} {slightlyT|slightly}, then {remainsteady|remained steady}. Costs {decrease|decreased}, and profits {decline|declined} for one month, but {overall|overall} the company was growing.",
+"Yara used social media to {curate|curate} the brand image. She posted photos in {flattering|flattering} light, {enhance|enhanced} the colours, and showed only the best {features|features}. She listed every {attribute|attribute} and wanted to {embed|embed} a video in every post. But the online world can be {deceptive|deceptive} and {superficial|superficial}: nobody shows a {flaw|flaw}. Some accounts were {influential|influential} and {upbeat|upbeat}; others were {envious|envious}. The feed was {endless|endless}, every post {appealing|appealing}.",
+"The pressure began to {eatawayat|eat away at} her. She had to {gothrough|go through} hard times, {fitin|fit in} with the crowd, and {comeupagainst|come up against} rude comments. She learned to {calmdown|calm down}, {breakoff|break off} from her phone at night, and {holddown|hold down} a normal routine. One day she {bumpinto|bumped into} an old friend, and they {endup|ended up} talking for hours.",
+"{whileL|While} Omar wanted to grow fast, Yara wanted to grow safely. {whereasL|Whereas} he saw only opportunities, she saw the risks. {although|Although} they {dis|disagreed}, their {ship|friendship} stayed strong. {eventhough|Even though} some people {mis|misjudged} them, they kept going. {despite|Despite} the rude comments, they worked on. {inspiteof|In spite of} bad reviews from a big blog, sales grew. Their {un|unacceptable} treatment by a rival was hard; {however|however}, they stayed calm. {nevertheless|Nevertheless}, they built on. {nonetheless|Nonetheless}, they succeeded. The rival's design was {il|illegal} in one country and {im|immature} in another.",
+"Then came the {blunder|blunder}: Omar chose the wrong chip, and the launch was a {flop|flop}. They {messup|messed up}, and for weeks they {getnowhere|got nowhere}. It was a hard {setback|setback}. Omar had to {acknowledge|acknowledge} his mistake — {admitting|admitting} it was not easy. He had {forgranted|taken it for granted} that the supplier was reliable. He had to {makesuccess|make} an extra effort, {offer|offer} an apology, and Yara had to {takeaction|take} responsibility. They had to {re|reboot} the project and even {extra|extra-check} every component.",
+"The company {lightly|got off lightly}, but the stress {toll|took its toll} on both. They didn't {clue|have a clue} what to do, so they {options|considered their options}. They {nochoice|had no choice but to} start again.",
+"To {mindoff|take her mind off} the disaster, Yara went diving and looked at the {seabed|sea bed}. She had {ordeal|gone through the ordeal} of a failed launch, but her friends {keptgoing|kept her going}. Omar wanted to {understood|make himself understood} to the investors; at last a small change {trick|did the trick}.",
+"Then came {luckybreak|a lucky break}. It wasn't {purechance|pure chance}: a famous chef had seen their sensor online. It was only {slimchance|a slim chance}, and it might be their {lastchance|last chance}, but they {grabchance|grabbed the chance}. The meeting was {touchgo|touch-and-go} until the last minute. They {runrisk|ran the risk}, and it was {worthrisk|worth the risk}. \"{whatluck|What luck}!\" said Omar. Everything happened {thereandthen|there and then}.",
+"Their idea began to {flourish|flourish}. It was a {masterstroke|masterstroke}, and their hard work finally {payoff|paid off}. The business became {lucrative|lucrative}. Soon they were {affluent|affluent} and {welloff|well-off}, but Yara didn't want to be {extravagant|extravagant}. She never {splashout|splashed out} on {costly|costly} things.",
+"The product was more than a garden sensor — it was {inter|international}. Users couldn't {overP|overload} the sensor and could restart it anytime. Yara said: \"Life is full of {highslows|highs and lows}, and success needs {giveandtake|give and take}. {givenchance|Given the chance}, {grabchance|grab the chance} and {takechance|take the opportunity to} learn. You cannot {pickchoose|pick and choose} every result. The road is {moreorless|more or less} the same for everyone. {slowlysurely|Slowly but surely}, you'll get there, and {soonerlater|sooner or later}, you'll be {safesound|safe and sound}. Sometimes life says, '{takeleave|Take it or leave it},' but every moment of {peacequiet|peace and quiet} is worth it.\"",
+"[Word Building — أسماء] The {age|marriage} of tech and gardens was strange. The {alN|proposal} was accepted. Yara's {antent|assistant} helped. Every {ation|communication} was clear. She hired a {cianian|technician}. {dom|Freedom} was important. Her {enceance|appearance} was calm. The {erorist|artist} designed the logo. Yara's {hood|childhood} love for plants shaped the idea. She followed one {ice|practice}. Every {ingN|meaning} was precise. Her {ism|optimism} kept them going. Success needed no {ness|weakness}. Their partnership was strong. The {sis|analysis} of data was quick. There was some {tionsion|obstruction} from big companies. The {tyity|activity} paid well. There was little {ure|pressure} at first. Every {ment|improvement} counted.",
+"[Word Building — صفات وأفعال] The garden was {able|habitable} again. The design was {alA|informal} yet very useful. Yara felt {edA|relaxed}. The team was {ic|artistic}. Their story was {ingA|interesting}. They were {ive|productive}. The tools were {fulless|useful, never useless}. Investors were {ous|generous}. Small children were {oryy|chatty}. Some jobs were {lyA|likely} to grow. Yara spoke {ly|effectively}. They had to {ate|congratulate} the team, {en|shorten} the launch, {iseize|realise} their vision, {ify|clarify} every doubt, and {ute|commute} shorter distances. She fought {antibullying|anti-bullying} in every school she visited.",
+"{aswellas|As well as} selling sensors, they teach children about plants. {notonly|Not only} did they help gardens, but they also helped families. {furthermore|Furthermore}, the app now works in three countries. {inaddition|In addition to} the app, they sell a small kit, and {besides|besides} teaching, they plan a school programme."
+],
+t:[
+"أحبّت يارا كل جهاز صغير جديد. جهازها المفضل كان جهازًا قابلًا للارتداء يستطيع أن يتتبّع نومها. أرادت أن تبني جهازًا ذكيًا: مستشعرًا ينبّه البستانيين حين تحتاج النباتات إلى الماء. أصبح صديقها عمر — الذي كان واثقًا من نفسه ومتعدد المواهب — شريكها المؤسس.",
+"في البداية، بدا تصميمهم قديمًا، وبرنامجهم غير محدَّث، والنموذج الأولي قد عفا عليه الزمن. كان يكاد يكون قديم الطراز! احتاجوا إلى ترقيته والنسخ الاحتياطي لملفاتهم كل ليلة. أرادوا منتجًا بأحدث التقنيات، بأحدث الوظائف، وبتوافق جيد مع أي جهاز منزلي في المطبخ. خطأ واحد أو خلل صغير يمكن أن يفسده؛ ويجب أن يتعامل مع آلاف المستخدمين. لو حصل عطل أو استطاع أحد اختراقه، سيهرب العملاء، فأضافوا برنامج التعرف على الوجه لباب الحديقة.",
+"في السنة الأولى، ازدادت المبيعات تدريجيًا، ثم ارتفعت بشكل كبير. رسمت يارا رسمًا بيانيًا لتوضّح النموّ: الخط تحرّك صعودًا بثبات، ثم انخفض بشكل حادّ في الشتاء، والسهم أشار نزولًا. انخفضت المبيعات قليلًا، ثم بقيت ثابتة. انخفضت التكاليف، وتراجعت الأرباح لشهر واحد، لكن بشكل عام كانت الشركة تنمو.",
+"استعملت يارا وسائل التواصل لتنسيق صورة العلامة. نشرت صورًا في إضاءة تُبرز المحاسن، وعزّزت الألوان، وأظهرت الملامح الأفضل فقط. سردت كل خاصية وأرادت أن تُدمج فيديو في كل منشور. لكن العالم الرقمي قد يكون مخادعًا وسطحيًا: لا أحد يُظهر عيبًا. بعض الحسابات كانت مؤثّرة ومتفائلة؛ وأخرى حسود. الخلاصة كانت لا نهائية، كل منشور جذّاب.",
+"بدأ الضغط يرهقها. اضطرت أن تمرّ بأوقات صعبة، وأن تنسجم مع الحشد، وأن تواجه تعليقات فظّة. تعلّمت أن تهدأ، وأن تنفصل عن هاتفها ليلًا، وأن تحتفظ بروتين طبيعي. ذات يوم قابلت صدفة صديقة قديمة، وانتهى الأمر بأنهما تحدّثتا لساعات.",
+"بينما أراد عمر أن يكبروا بسرعة، أرادت يارا أن يكبروا بأمان. في حين كان يرى الفرص فقط، كانت هي ترى المخاطر. على الرغم من اختلافهما، بقيت صداقتهما قوية. على الرغم من أن بعض الناس أساؤوا الحكم عليهما، تابعا. على الرغم من التعليقات الفظّة، عملا. على الرغم من مراجعات سيئة من مدوّنة كبيرة، نمت المبيعات. المعاملة غير المقبولة من منافس كانت صعبة؛ ومع ذلك، بقيا هادئين. مع ذلك، بنيا. ومع هذا، نجحا. تصميم المنافس كان غير قانوني في بلد وغير ناضج في بلد آخر.",
+"ثم جاء الخطأ الفادح: اختار عمر الشريحة الخاطئة، وكان الإطلاق فشلًا ذريعًا. أفسدا الأمر، ولأسابيع لم يصلا إلى أي مكان. كانت نكسة صعبة. كان على عمر أن يعترف بخطئه — لم يكن الاعتراف سهلًا. كان قد اعتبر المورّد موثوقًا مسلَّمًا به. كان عليه أن يبذل جهدًا إضافيًا، ويعتذر، وكان على يارا أن تتحمّل المسؤولية. اضطرا لإعادة تشغيل المشروع والتحقق من كل مكوّن.",
+"نجت الشركة بأقل الأضرار، لكن التوتر أرهقهما. لم يكن لديهما أدنى فكرة عمّا يفعلانه، ففكّرا في خياراتهما. لم يكن أمامهما خيار سوى البدء من جديد.",
+"لتصرف ذهنها عن الكارثة، غاصت يارا ونظرت إلى قاع البحر. مرّت بتجربة إطلاق فاشل صعبة، لكن أصدقاءها ساعدوها على الاستمرار. أراد عمر أن يجعل نفسه مفهومًا للمستثمرين؛ وأخيرًا وفى تغيير صغير بالغرض.",
+"ثم جاءت ضربة الحظ. لم تكن مجرّد صدفة: كان طاهٍ مشهور قد رأى مستشعرهم عبر الإنترنت. كانت فرصة ضئيلة فقط، وقد تكون فرصتهم الأخيرة، لكنهم اغتنموا الفرصة. كان الاجتماع حرجًا حتى اللحظة الأخيرة. جازفوا، وكانت المخاطرة تستحق. \"يا له من حظ!\" قال عمر. كل شيء حصل فورًا.",
+"بدأت فكرتهم تزدهر. كانت ضربة معلّم، وأثمر عملهم الشاق أخيرًا. أصبح المشروع مربحًا. سرعان ما أصبحا غنيَّين وميسورَي الحال، لكن يارا لم ترد أن تكون مسرفة. لم تنفق ببذخ على أشياء مكلفة.",
+"كان المنتج أكثر من مستشعر حديقة — كان دوليًا. لم يستطع المستخدمون أن يفرطوا في تحميل المستشعر ويستطيعون إعادة تشغيله في أي وقت. قالت يارا: \"الحياة مليئة بالتقلّبات، والنجاح يحتاج إلى عطاء وأخذ. إذا أُتيحت الفرصة، اغتنمها وتعلّم منها. لا تستطيع أن تنتقي كل نتيجة. الطريق تقريبًا نفسه للجميع. ببطء ولكن بثبات، ستصل، وعاجلًا أم آجلًا، ستكون سالمًا معافى. أحيانًا تقول الحياة: 'خذها أو اتركها،' لكن كل لحظة سلام وسكينة تستحق.\"",
+"[Word Building — أسماء] كان زواج التقنية بالحدائق غريبًا. قُبل الاقتراح. ساعد مساعد يارا. كل تواصل كان واضحًا. وظّفت فنّيًا. الحرية كانت مهمة. مظهرها كان هادئًا. الفنان صمّم الشعار. حبّ يارا للنباتات في طفولتها شكّل الفكرة. اتّبعت ممارسة واحدة. كل معنى كان دقيقًا. تفاؤلها أبقاهما مستمرَّين. النجاح لم يحتج إلى ضعف. كانت شراكتهما قوية. تحليل البيانات كان سريعًا. كان هناك بعض العرقلة من شركات كبيرة. النشاط كان مربحًا. كان الضغط قليلًا في البداية. كل تحسّن يُحتسب.",
+"[Word Building — صفات وأفعال] أصبحت الحديقة صالحة للسكن مجددًا. التصميم كان غير رسمي لكنه مفيد جدًا. شعرت يارا بالاسترخاء. الفريق كان فنّانًا. قصتهم كانت مثيرة للاهتمام. كانوا منتجين. الأدوات كانت مفيدة، ليست عديمة الفائدة أبدًا. المستثمرون كانوا كرماء. الأطفال الصغار كانوا ثرثارين. بعض الوظائف كانت على الأرجح ستنمو. تحدّثت يارا بشكل فعّال. كان عليهم تهنئة الفريق، وتقصير مدة الإطلاق، وإدراك رؤيتهم، وتوضيح كل شك، والتنقل مسافات أقصر. حاربت التنمّر في كل مدرسة زارتها.",
+"بالإضافة إلى بيع المستشعرات، يعلّمون الأطفال عن النباتات. ليس فقط ساعدوا الحدائق، بل ساعدوا الأسر أيضًا. علاوة على ذلك، التطبيق يعمل الآن في ثلاث دول. بالإضافة إلى التطبيق، يبيعون طقمًا صغيرًا، وفضلًا عن التعليم، يخططون لبرنامج مدرسي."
+]
+}];
+
+/* ============================================================
+   الحالة والدوال
+   ============================================================ */
+const state={
+  cur:0,
+  showTr:[false,false,false],
+  hl:true,
+  rate:0.7,
+  seen:[new Set(),new Set(),new Set()],
+  voice:null,
+  play:{on:false,paused:false,idx:-1,utter:null,paraSpans:null,active:-1,q:[]}
+};
+
+const $=q=>document.querySelector(q);
+const $$=q=>Array.from(document.querySelectorAll(q));
+const main=$("#main"), tabsEl=$("#tabs"), pop=$("#pop");
+const stripTags=s=>s.replace(/\{[a-zA-Z0-9]+\|([^}]+)\}/g,"$1");
+
+/* عرض التبويبات */
+function renderTabs(){
+  tabsEl.innerHTML="";
+  STORIES.forEach((s,i)=>{
+    const b=document.createElement("button");
+    b.className="tab"; b.type="button";
+    b.setAttribute("aria-current", i===state.cur?"true":"false");
+    b.innerHTML=`<b>القصة ${i+1}</b><small>${s.ar}</small>`;
+    b.addEventListener("click",()=>go(i));
+    tabsEl.appendChild(b);
+  });
+}
+
+/* عرض القصة */
+function render(){
+  stopAudio();
+  const s=STORIES[state.cur];
+  const seen=state.seen[state.cur];
+  const showTr=state.showTr[state.cur];
+  const totalW=new Set(); s.p.forEach(p=>{const m=p.match(/\{[a-zA-Z0-9]+\|/g)||[];m.forEach(x=>totalW.add(x))});
+
+  let html=`<article class="card ${state.hl?"":"nohl"}" id="story">
+    <h2 class="s-title">${s.title}</h2>
+    <p class="s-sub">${s.ar} — ${s.units}</p>
+    <div class="tools" role="group" aria-label="أدوات القراءة">
+      <button class="btn primary" id="btnPlay" aria-pressed="false">▶ استمع لكل القصة</button>
+      <button class="btn" id="btnStep" aria-pressed="false">⏭ فقرة تلو فقرة</button>
+      <button class="btn" id="btnPause" aria-pressed="false">⏸ إيقاف مؤقت</button>
+      <button class="btn" id="btnStop">■ إيقاف</button>
+      <div class="seg" role="group" aria-label="سرعة القراءة">
+        <button data-r="0.55" aria-pressed="${state.rate===0.55}">بطيء جدًا</button>
+        <button data-r="0.7"  aria-pressed="${state.rate===0.7}">بطيء</button>
+        <button data-r="0.9"  aria-pressed="${state.rate===0.9}">عادي</button>
+      </div>
+      <select id="voiceSel" aria-label="اختيار الصوت"></select>
+      <button class="btn" id="btnTr"  aria-pressed="${showTr}">${showTr?"إخفاء الترجمة":"إظهار الترجمة"}</button>
+      <button class="btn" id="btnHl"  aria-pressed="${state.hl}">${state.hl?"إخفاء التظليل":"إظهار التظليل"}</button>
+      <span class="count">تم استعراض ${seen.size} من ${totalW.size} كلمة</span>
+    </div>
+    <p class="audio-note">اضغط ▶ لسماع القصة كاملة، أو ⏭ لسماع فقرة تلو فقرة، أو 🔊 بجانب كل فقرة لسماعها وحدها.</p>
+    <div id="paras"></div>
+    <div class="storynav" role="group" aria-label="التنقّل بين القصص">
+      ${state.cur>0?`<button class="btn" id="prev">◀ القصة السابقة (${STORIES[state.cur-1].ar})</button>`:`<div class="spacer"></div>`}
+      ${state.cur<STORIES.length-1?`<button class="btn primary" id="next">القصة التالية (${STORIES[state.cur+1].ar}) ▶</button>`:`<div class="spacer"></div>`}
+    </div>
+    ${state.cur===STORIES.length-1?`<p class="done">🎉 مبارك! انتهيت من قراءة القصص الثلاث. راجع أي كلمة بالضغط عليها.</p>`:""}
+  </article>`;
+  main.innerHTML=html;
+
+  const parasEl=$("#paras");
+  s.p.forEach((para,i)=>{
+    const div=document.createElement("div");
+    div.className="para"; div.dataset.i=i;
+    let inner=`<button class="pplay" aria-label="استمع للفقرة ${i+1}" data-i="${i}">🔊</button><p class="en">`;
+    inner+=para.replace(/\{([a-zA-Z0-9]+)\|([^}]+)\}/g,(_,k,t)=>{
+      const cls="w"+(seen.has(k)?" seen":"");
+      return `<span class="${cls}" data-k="${k}" role="button" tabindex="0">${t}</span>`;
+    });
+    inner+=`</p>`;
+    if(showTr) inner+=`<p class="tr">${s.t[i]||""}</p>`;
+    div.innerHTML=inner;
+    parasEl.appendChild(div);
+  });
+  fillVoices(); updateAudioUI();
+}
+
+/* اختيار الأصوات */
+function fillVoices(){
+  const sel=$("#voiceSel"); if(!sel) return;
+  const list=(speechSynthesis.getVoices()||[]).filter(v=>v.lang.startsWith("en"));
+  if(!list.length){sel.innerHTML='<option>—</option>';return}
+  sel.innerHTML=list.map(v=>`<option value="${v.name}">${v.name} (${v.lang})</option>`).join("");
+  if(!state.voice||!list.find(v=>v.name===state.voice)){
+    const pref=list.find(v=>/female|zira|jenny|aria|samantha/i.test(v.name))
+             ||list.find(v=>v.lang==="en-US")||list[0];
+    state.voice=pref.name;
+  }
+  sel.value=state.voice;
+}
+if(typeof speechSynthesis!=="undefined"){
+  speechSynthesis.onvoiceschanged=fillVoices;
+}
+
+/* البحث في القاموس مع المرادفات */
+function lookupKey(k){
+  return D[k];
+}
+
+/* فتح بطاقة الكلمة */
+function openWord(k){
+  const e=lookupKey(k); if(!e) return;
+  const [head,pos,cat,en,ar,fx]=e;
+  state.seen[state.cur].add(k);
+  const seenNum=state.seen[state.cur].size;
+  const cnt=$(".count"); if(cnt){const total=cnt.textContent.match(/من (\d+)/)[1]; cnt.textContent=`تم استعراض ${seenNum} من ${total} كلمة`}
+  $$(`.w[data-k="${k}"]`).forEach(el=>el.classList.add("seen"));
+  const chips=[];
+  if(pos && POS[pos]) chips.push(`<span class="chip">${POS[pos]}</span>`);
+  if(cat && CAT[cat]) chips.push(`<span class="chip cat">${CAT[cat]}</span>`);
+  if(fx) chips.push(`<span class="chip fix">✓ تم تصحيح المعنى</span>`);
+  $("#pChips").innerHTML=chips.join("");
+  $("#pHead").textContent=head;
+  const s=STORIES[state.cur];
+  let inst="";
+  for(const p of s.p){
+    const m=p.match(new RegExp(`\\{${k}\\|([^}]+)\\}`));
+    if(m){inst=`في القصة: "${m[1]}"`; break}
+  }
+  $("#pInst").textContent=inst;
+  let body="";
+  const note=CAT_NOTE[cat];
+  if(en) body+=`<div class="sec"><h3>المعنى بالإنجليزية</h3><p class="en-m">${en}</p></div>`;
+  if(ar) body+=`<div class="sec"><h3>المعنى بالعربية</h3><p class="ar-m">${ar}</p></div>`;
+  if(note) body+=`<div class="sec"><p class="note">📌 ${note}</p></div>`;
+  $("#pBody").innerHTML=body;
+  pop.hidden=false; $("#pClose").focus();
+}
+function closeWord(){pop.hidden=true}
+
+/* نطق كلمة واحدة */
+function speakWord(text){
+  if(typeof speechSynthesis==="undefined") return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.rate=Math.max(0.5,state.rate); u.pitch=1; u.lang="en-US";
+  const v=(speechSynthesis.getVoices()||[]).find(x=>x.name===state.voice);
+  if(v) u.voice=v;
+  speechSynthesis.speak(u);
+}
+
+/* قراءة كل القصة أو فقرة تلو فقرة */
+function speakAll(step){
+  if(typeof speechSynthesis==="undefined"){alert("متصفحك لا يدعم النطق"); return}
+  speechSynthesis.cancel();
+  const paras=STORIES[state.cur].p.map(stripTags);
+  state.play={on:true,paused:false,idx:-1,utter:null,paraSpans:$$("#paras .para"),active:-1,q:paras,stepMode:!!step};
+  playNext();
+}
+function playNext(){
+  const q=state.play.q;
+  state.play.idx++;
+  if(!state.play.on||state.play.idx>=q.length){stopAudio();return}
+  highlight(state.play.idx);
+  const u=new SpeechSynthesisUtterance(q[state.play.idx]);
+  u.rate=Math.max(0.5,state.rate); u.pitch=1; u.lang="en-US";
+  const v=(speechSynthesis.getVoices()||[]).find(x=>x.name===state.voice);
+  if(v) u.voice=v;
+  u.onend=()=>{
+    if(!state.play.on) return;
+    if(state.play.stepMode){pauseAudio();updateAudioUI();return}
+    setTimeout(playNext,180);
+  };
+  state.play.utter=u;
+  speechSynthesis.speak(u);
+  updateAudioUI();
+}
+function speakFrom(i){
+  if(typeof speechSynthesis==="undefined") return;
+  speechSynthesis.cancel();
+  const paras=STORIES[state.cur].p.map(stripTags);
+  state.play={on:true,paused:false,idx:i-1,utter:null,paraSpans:$$("#paras .para"),active:-1,q:paras,stepMode:false};
+  playNext();
+}
+function highlight(i){
+  $$("#paras .para").forEach(p=>p.classList.remove("reading"));
+  const el=$(`#paras .para[data-i="${i}"]`);
+  if(el){el.classList.add("reading");el.scrollIntoView({behavior:"smooth",block:"center"})}
+  state.play.active=i;
+}
+function pauseAudio(){if(typeof speechSynthesis!=="undefined"&&speechSynthesis.speaking){speechSynthesis.pause();state.play.paused=true;updateAudioUI()}}
+function resumeAudio(){if(typeof speechSynthesis!=="undefined"&&speechSynthesis.paused){speechSynthesis.resume();state.play.paused=false;updateAudioUI()}}
+function stopAudio(){if(typeof speechSynthesis!=="undefined")speechSynthesis.cancel();state.play={on:false,paused:false,idx:-1,utter:null,paraSpans:null,active:-1,q:[]};$$("#paras .para").forEach(p=>p.classList.remove("reading"));updateAudioUI()}
+function stepNext(){
+  if(!state.play.on){speakAll(true);return}
+  if(state.play.paused){state.play.paused=false;playNext();return}
+  playNext();
+}
+function updateAudioUI(){
+  const bp=$("#btnPlay"),bs=$("#btnStep"),bpa=$("#btnPause");
+  if(bp) bp.setAttribute("aria-pressed", state.play.on&&!state.play.stepMode?"true":"false");
+  if(bs) bs.setAttribute("aria-pressed", state.play.on&&state.play.stepMode?"true":"false");
+  if(bpa) bpa.setAttribute("aria-pressed", state.play.paused?"true":"false");
+}
+
+/* تنقّل بين القصص */
+function go(i){
+  if(i<0||i>=STORIES.length) return;
+  state.cur=i; stopAudio(); render(); renderTabs();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* الأحداث */
+document.addEventListener("click",ev=>{
+  const t=ev.target;
+  if(t.classList.contains("w")){openWord(t.dataset.k);return}
+  if(t.classList.contains("pplay")){speakFrom(+t.dataset.i);return}
+  if(t.id==="pClose"||t.id==="backdrop"){closeWord();return}
+  if(t.id==="pSay"){speakWord($("#pHead").textContent);return}
+  if(t.id==="btnPlay"){state.play.on&&!state.play.stepMode?stopAudio():speakAll(false);return}
+  if(t.id==="btnStep"){stepNext();return}
+  if(t.id==="btnPause"){state.play.paused?resumeAudio():pauseAudio();return}
+  if(t.id==="btnStop"){stopAudio();return}
+  if(t.id==="btnTr"){state.showTr[state.cur]=!state.showTr[state.cur];render();return}
+  if(t.id==="btnHl"){state.hl=!state.hl;render();return}
+  if(t.id==="prev"){go(state.cur-1);return}
+  if(t.id==="next"){go(state.cur+1);return}
+  if(t.dataset&&t.dataset.r){state.rate=parseFloat(t.dataset.r);$$(".seg button").forEach(b=>b.setAttribute("aria-pressed", b===t?"true":"false"));return}
+});
+document.addEventListener("change",ev=>{
+  if(ev.target.id==="voiceSel"){state.voice=ev.target.value}
+});
+document.addEventListener("keydown",ev=>{
+  if(ev.key==="Escape"&&!pop.hidden){closeWord()}
+  if(ev.key==="Enter"&&ev.target.classList&&ev.target.classList.contains("w")){openWord(ev.target.dataset.k)}
+});
+
+renderTabs(); render();
+</script>
+</body>
+</html>
